@@ -1,9 +1,11 @@
 import { GripVertical, X } from "lucide-react";
-
+import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { SingleRow } from "./SingleRow";
+type Message = { id: number; text?: string; image?: File };
 interface MessagesListProps {
   printing?: boolean;
-  messages: (string | File)[];
-  setMessages: React.Dispatch<React.SetStateAction<(string | File)[]>>;
+  messages: Message[];
+  setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
 }
 
 export function MessagesList({ printing = false, messages, setMessages }: MessagesListProps) {
@@ -20,38 +22,49 @@ export function MessagesList({ printing = false, messages, setMessages }: Messag
   function mergeMessage(idx1: number, idx2: number) {
     setMessages((prev) => {
       const newMessages = [...prev];
-      newMessages[idx1] = newMessages[idx1] + " \n" + newMessages[idx2];
+    //   newMessages[idx1] = newMessages[idx1] + " \n" + newMessages[idx2];
+      newMessages.splice(idx1, 1, {id:newMessages[idx1].id,text:newMessages[idx1].text + " \n" + newMessages[idx2].text});
       newMessages.splice(idx2, 1);
       return newMessages;
     });
   }
   return (
     <div className="w-full h-full flex flex-col gap-3 ">
-      {messages.map((msg, index) => {
-        if (!msg) return null;
-        // is a string
-        if (typeof msg === "string") {
-          if (msg.length === 0) return null;
-          return (
-            <div
-              key={index}
-              className="w-full  flex justify-between items-center p-3 bg-base-300 rounded-lg">
-              {!printing && (
-                <div className="h-full p-2 py-5 bg-base-200 group has-[:hover]:bg-info">
-                  <GripVertical className="size-4" />
-                </div>
-              )}
-              <p className="w-full">{msg}</p>
-              {!printing && (
-                <div className="h-full p-2 py-5 bg-base-200 group has-[:hover]:bg-error">
-                  <X className="size-4   cursor-pointer" onClick={() => removeMessage(index)} />
-                </div>
-              )}
-            </div>
-          );
-        }
-        //   is a file
-      })}
+
+        <SortableContext items={messages} strategy={verticalListSortingStrategy}>
+          {messages.map((msg, index) => {
+            if (!msg) return null;
+            // is a string
+            if (typeof msg.text === "string") {
+              if (msg.text.length === 0) return null;
+              return (
+                <SingleRow key={msg.id} id={index.toString()}>
+                  <div
+                    id={msg.id.toString()}
+                    key={msg.id}
+                    className="w-full  flex justify-between items-center p-3 bg-base-300 rounded-lg">
+                    {!printing && (
+                      <div className="h-full p-2 py-5 bg-base-200 group has-[:hover]:bg-info">
+                        <GripVertical className="size-4" />
+                      </div>
+                    )}
+                    <p className="w-full">{msg.text}</p>
+                    {!printing && (
+                      <div className="h-full p-2 py-5 bg-base-200 group has-[:hover]:bg-error">
+                        <X
+                          className="size-4   cursor-pointer"
+                          onClick={() => removeMessage(index)}
+                        />
+                      </div>
+                    )}
+                  </div>
+                </SingleRow>
+              );
+            }
+            //   is a file
+          })}
+        </SortableContext>
+
     </div>
   );
 }

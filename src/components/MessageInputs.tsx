@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
+type Message = { id: number; text?: string; image?: File };
 interface TextAreaProps {
-  setMessages: React.Dispatch<React.SetStateAction<(string | File)[]>>;
+  setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
 }
 
 export function TextArea({ setMessages }: TextAreaProps) {
@@ -16,14 +17,13 @@ export function TextArea({ setMessages }: TextAreaProps) {
     console.log(" chks langth ", message_chunks);
     if (message_chunks.length === 1) {
         console.log("adding messages not from whatsapp",input)
-      setMessages((prev) => [...prev, input]);
+      setMessages((prev) => [...prev,{id:prev.length+1,text:input}]);
           setInput("");
       return;
     }
     message_chunks.forEach((message) => {
-      const message_body = message.split(":").slice(2).join(" ");
-
-      setMessages((prev) => [...prev, message_body]);
+    const message_body = message.split(":").slice(2).join(" ");
+    setMessages((prev) => [...prev, { id: prev.length + 1, text: message_body }]);
     });
     // setMessages(prev => [...prev, input])
     setInput("");
@@ -48,7 +48,7 @@ export function ImageArea({ setMessages }: TextAreaProps) {
   const [image, setImage] = useState<File | null>(null);
   useEffect(() => {
     if (image) {
-      setMessages((prev) => [...prev, image]);
+      setMessages((prev) => [...prev,{id:prev.length+1,image}]);
     }
   }, [image]);
   return(
