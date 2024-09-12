@@ -25,7 +25,7 @@ export function TextArea({ setMessages }: TextAreaProps) {
           { id: Math.floor(Math.random() * 1000), text: message_body },
         ]);
       });
-          setInput("");
+      setInput("");
       return;
     }
     if (input.includes("---")) {

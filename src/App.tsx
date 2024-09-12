@@ -15,6 +15,7 @@ import { MessagesList } from "./components/MessagesList";
 import { Message } from "./components/types";
 import { PrintMessages } from "./components/PrintMessages";
 import { Printer, X } from "lucide-react";
+import  { PWAStatusPill } from "./components/PWAStatusPill";
 
 function App() {
   const [messages, setMessages] = useState<Message[]>(defaultMessage);
@@ -44,6 +45,8 @@ function App() {
 
   return (
     <div className="min-h-screen w-full h-full flex flex-col  justify-center items-center p-2">
+      {/* <div className="circle-to-pill ">pill aniamtion</div> */}
+      <PWAStatusPill />
       <DndContext sensors={sensors} collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
         {isPrinting ? (
           <PrintMessages messages={messages} />
@@ -54,14 +57,10 @@ function App() {
       <button
         className="btn btn-primary fixed bottom-[5%] left-[5%]"
         onClick={() => setIsPrinting(!isPrinting)}>
-        {isPrinting ? (
-          <X className="" />
-        ) : (
-          <Printer className="" />
-        )}
+        {isPrinting ? <X className="" /> : <Printer className="" />}
       </button>
-
       <MessageInputModals setMessages={setMessages} />
+
     </div>
   );
 }

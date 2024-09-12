@@ -1,7 +1,6 @@
-import { ChevronDown, ChevronUp, GripVertical, Minus, RotateCcw, RotateCw, X } from "lucide-react";
+import { ChevronDown, ChevronUp, GripVertical, Minus} from "lucide-react";
 import { arrayMove, SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { SingleRow } from "./SingleRow";
-import { useState } from "react";
 type Message = { id: number; text?: string; image?: File };
 interface MessagesListProps {
   printing?: boolean;
