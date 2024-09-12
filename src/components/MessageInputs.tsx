@@ -48,7 +48,13 @@ export function TextArea({ setMessages }: TextAreaProps) {
         className="min-h-[30vh] h-full textarea w-full"
         value={input}
         onChange={handleChange}
-        placeholder="Paste your mpesa messages here"
+        placeholder={`
+          Paste mpesa messages from whatsapp for auto parsing 
+          or 
+          copy individual messages separated with 
+          ---
+          
+          `}
       />
 
       <div className="modal-action w-full gap-4">
