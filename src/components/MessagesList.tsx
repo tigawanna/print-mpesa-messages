@@ -29,7 +29,7 @@ export function MessagesList({ printing = false, messages, setMessages }: Messag
     });
   }
   return (
-    <div className="w-full h-full flex flex-col gap-3 ">
+    <div className="w-full h-full flex flex-col gap-3 py-2 px-5 ">
 
         <SortableContext items={messages} strategy={verticalListSortingStrategy}>
           {messages.map((msg, index) => {
@@ -42,15 +42,15 @@ export function MessagesList({ printing = false, messages, setMessages }: Messag
                   <div
                     id={msg.id.toString()}
                     key={msg.id}
-                    className="w-full  flex justify-between items-center p-3 bg-base-300 rounded-lg">
+                    className="w-full  flex justify-between items-center rounded-lg">
                     {!printing && (
-                      <div className="h-full p-2 py-5 bg-base-200 group has-[:hover]:bg-info">
+                      <div className="h-full p-2  group has-[:hover]:bg-info">
                         <GripVertical className="size-4" />
                       </div>
                     )}
                     <p className="w-full">{msg.text}</p>
                     {!printing && (
-                      <div className="h-full p-2 py-5 bg-base-200 group has-[:hover]:bg-error">
+                      <div className="h-full p-2  bg-base-200 group has-[:hover]:bg-error">
                         <X
                           className="size-4   cursor-pointer"
                           onClick={() => removeMessage(index)}

@@ -11,6 +11,6 @@ export default {
   },
   plugins: [require("daisyui"),require("tailwindcss-animate")],
   daisyui: {
-    themes: ["cupcake",],
+    themes: ["dark",],
   },
 }

@@ -23,9 +23,7 @@ function App() {
     })
   );
 
-  function getMessagePos(id: number) {
-    return messages.findIndex((message) => message.id === id);
-  }
+
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -36,8 +34,6 @@ function App() {
       // const newPos = getMessagePos(over?.id.toString() as unknown as number);
       const originalPos = Number.parseInt(active?.id.toString());
       const newPos = Number.parseInt(over?.id.toString());
-      console.log("messages  == ", messages);
-      console.log(originalPos, newPos);
       if(originalPos === newPos) return messages
       if(originalPos > newPos) return arrayMove(messages, originalPos, newPos);
       return arrayMove(messages,newPos, originalPos);
@@ -45,7 +41,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen w-full h-full flex flex-col bg-base-100 justify-center items-center p-2">
+    <div className="min-h-screen w-full h-full flex flex-col bg-base-100 text-base-content justify-center items-center p-2">
       <div className="text-2xl">uwu</div>
       <DndContext sensors={sensors} collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
         <MessagesList  messages={messages} setMessages={setMessages} />

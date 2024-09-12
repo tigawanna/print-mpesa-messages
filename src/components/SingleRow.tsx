@@ -1,23 +1,27 @@
 import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
+
 interface SingleRowProps {
   children: React.ReactNode;
   id: string;
-}  
-export function SingleRow({id,children}: SingleRowProps) {
-      const { attributes, listeners, setNodeRef, transform, transition,isDragging,isOver } = useSortable({ id });
+}
+export function SingleRow({ id, children }: SingleRowProps) {
+  const { attributes, listeners, setNodeRef,isDragging, isOver } =useSortable({ id });
 
-      const style = {
-        transition,
-        transform: CSS.Transform.toString(transform),
-        opacity: isDragging ? 0.5 : 1,
-        border: isDragging ?"1px solid red":"",
-        backgroundColor: isOver ? "red" : "",
-        
-        
-      };
+function rowStyles(isOver:boolean,isDragging:boolean) {
+    if(isOver) return "bg-warning/5 text-warning/30 p-2";
+    if(isDragging) return "bg-warning/10 text-warning p-2";
+    return "bg-base-200 animate-in zoom-in-95 duration-700 transition-all p-2";
+    
+  }
   return (
-    <div ref={setNodeRef} style={{...style,zIndex:isDragging?50:10}} {...attributes} {...listeners} className="">
+    <div
+      className={rowStyles(isOver,isDragging)}
+      ref={setNodeRef}
+      // style={{ ...style, zIndex: isDragging ? 50 : 10 }}
+      {...attributes}
+      {...listeners}
+      >
+
       {children}
     </div>
   );
