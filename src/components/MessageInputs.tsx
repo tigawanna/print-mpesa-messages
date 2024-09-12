@@ -16,16 +16,15 @@ export function TextArea({ setMessages }: TextAreaProps) {
     if(typeof input !== "string") return
     if (input.length === 0) return;
     const message_chunks = input.split("[");
-    console.log(" chks langth ", message_chunks);
     if (message_chunks.length === 1) {
-        console.log("adding messages not from whatsapp",input)
-      setMessages((prev) => [...prev,{id:prev.length+1,text:input}]);
+      const randomNumber = Math.floor(Math.random() * 1000);
+      setMessages((prev) => [...prev,{id:randomNumber,text:input}]);
           setInput("");
       return;
     }
     message_chunks.forEach((message) => {
     const message_body = message.split(":").slice(2).join(" ");
-    setMessages((prev) => [...prev, { id: prev.length + 1, text: message_body }]);
+    setMessages((prev) => [...prev, { id: Math.floor(Math.random() * 1000), text: message_body }]);
     });
     // setMessages(prev => [...prev, input])
     setInput("");
@@ -88,7 +87,7 @@ export function MessageInputModals({setMessages}: TextAreaProps) {
   },[])
   return (
     <>
-      <div className="fixed bottom-[10%] right-[5%] flex gap-2">
+      <div className="fixed bottom-[5%] right-[25%] flex gap-2">
         <button
           className="btn btn-sm btn-primary "
           onClick={() => textDialogRef.current?.showModal()}>

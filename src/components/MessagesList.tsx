@@ -1,5 +1,5 @@
-import { GripVertical, X } from "lucide-react";
-import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { ChevronDown, ChevronUp, GripVertical, Minus, X } from "lucide-react";
+import { arrayMove, SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { SingleRow } from "./SingleRow";
 type Message = { id: number; text?: string; image?: File };
 interface MessagesListProps {
@@ -9,9 +9,6 @@ interface MessagesListProps {
 }
 
 export function MessagesList({ printing = false, messages, setMessages }: MessagesListProps) {
-  function removeMessage(index: number) {
-    setMessages?.((prev) => prev.filter((_, i) => i !== index));
-  }
 
   return (
     <div className="w-full h-full flex flex-col gap-3 py-2 px-5 ">
@@ -21,42 +18,44 @@ export function MessagesList({ printing = false, messages, setMessages }: Messag
             if (!msg) return null;
             // is a string
             if (typeof msg.text === "string") {
-              if (msg.text.length === 0) return null;
+            if (msg.text.length === 0) return null;
+            
               return (
-                <SingleRow key={msg.id} id={index.toString()}>
-                  <div
-                    id={msg.id.toString()}
-                    key={msg.id}
-                    className="w-full  flex justify-between items-center rounded-lg">
-                    {!printing && (
-                      <div className="h-full p-2  group has-[:hover]:bg-info">
-                        <GripVertical className="size-4" />
-                      </div>
-                    )}
-                    <p className="w-full">{msg.text}</p>
-                    {!printing && (
-                      <div className="h-full p-2  ">
-                        <X
-                          className="size-4   cursor-pointer"
-                          onClick={() => removeMessage(index)}
-                        />
-                      </div>
-                    )}
-                  </div>
-                </SingleRow>
+                <div
+                  id={msg.id.toString()}
+                  style={{
+                    minHeight: msg.text.length > 100 ? "18vh" : "",
+                  }}
+                  key={msg.id}
+                  className="w-full flex justify-between gap-1  rounded-lg">
+                  <SingleRow key={msg.id} id={index.toString()}>
+                    <div className="w-full flex justify-between  rounded-lg">
+                      {!printing && (
+                        <div className="h-full p-2  group has-[:hover]:bg-info">
+                          <GripVertical className="size-4" />
+                        </div>
+                      )}
+                      <p className="w-full">{msg.text}</p>
+                    </div>
+                  </SingleRow>
+                  <MessagesRowActions index={index} printing={printing} setMessages={setMessages} />
+                </div>
               );
             }
             //   is a file
             if (msg.image) {
               const imageUrl = URL.createObjectURL(msg.image);
               return (
-                <SingleRow key={msg.id} id={index.toString()}>
-                  <img
-                    className="w-full h-full object-cover rounded-lg"
-                    src={imageUrl}
-                    alt="image"
-                  />
-                </SingleRow>
+                <div className="w-full flex justify-between gap-1  rounded-lg">
+                  <SingleRow key={msg.id} id={index.toString()}>
+                    <img
+                      className="w-full h-full min-h-[20vh] object-cover rounded-lg"
+                      src={imageUrl}
+                      alt="image"
+                    />
+                  </SingleRow>
+                <MessagesRowActions index={index} printing={printing} setMessages={setMessages}/>
+                </div>
               );
             }
           })}
@@ -66,3 +65,39 @@ export function MessagesList({ printing = false, messages, setMessages }: Messag
   );
 }
 
+
+
+interface MessagesRowActionsProps {
+  index: number;
+  printing?: boolean;
+  setMessages?: React.Dispatch<React.SetStateAction<Message[]>>;
+}
+
+export function MessagesRowActions({index,printing,setMessages}:MessagesRowActionsProps){  
+  function removeMessage(index: number) {
+  setMessages?.((prev) => prev.filter((_, i) => i !== index));
+}
+
+function moveUpwards(index: number) {
+  setMessages?.((prev) => arrayMove(prev, index, index - 1));
+}
+function moveDownwards(index: number) {
+  setMessages?.((prev) => arrayMove(prev, index, index + 1));
+}
+if(printing) return null
+return (
+  <div className="flex flex-wrap justify-center items-center gap-3">
+    <div className="flex flex-wrap  justify-center items-center gap-2">
+      <button className="btn btn-sm" onClick={() => moveUpwards(index)}>
+        <ChevronUp className="size-4 hover:bg-success" />
+      </button>
+      <button className="btn btn-sm" onClick={() => moveDownwards(index)}>
+        <ChevronDown className="size-4 hover:bg-success" />
+      </button>
+    </div>
+    <button className="btn btn-sm btn-error">
+      <Minus className="size-4   cursor-pointer" onClick={() => removeMessage(index)} />
+    </button>
+  </div>
+);
+}

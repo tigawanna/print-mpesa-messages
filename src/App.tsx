@@ -18,6 +18,7 @@ import { Printer, X } from "lucide-react";
 
 function App() {
   const [messages, setMessages] = useState<Message[]>(defaultMessage);
+  // console.log(" ==  messags  ==== ",messages)
   const [isPrinting, setIsPrinting] = useState(false);
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -51,7 +52,7 @@ function App() {
         )}
       </DndContext>
       <button
-        className="btn btn-primary fixed bottom-[10%] left-[5%]"
+        className="btn btn-primary fixed bottom-[5%] left-[5%]"
         onClick={() => setIsPrinting(!isPrinting)}>
         {isPrinting ? (
           <X className="" />
