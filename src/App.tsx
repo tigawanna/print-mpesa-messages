@@ -17,6 +17,7 @@ import { PrintMessages } from "./components/PrintMessages";
 import { Printer, X } from "lucide-react";
 import  { PWAStatusPill } from "./components/PWAStatusPill";
 
+
 function App() {
   const [messages, setMessages] = useState<Message[]>(defaultMessage);
   // console.log(" ==  messags  ==== ",messages)
@@ -60,7 +61,7 @@ function App() {
         {isPrinting ? <X className="" /> : <Printer className="" />}
       </button>
       <MessageInputModals setMessages={setMessages} />
-
+      {/* <PWABadge/> */}
     </div>
   );
 }

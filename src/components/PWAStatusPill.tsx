@@ -21,64 +21,67 @@ export function PWAStatusPill(){
     },
   });
 
-  console.log("offlineReady", offlineReady, "needRefresh", needRefresh);
-  const [isVisible, setIsVisible] = useState(offlineReady || needRefresh);
+
+  const [_, setIsVisible] = useState(false);
   const [isRemoving, setIsRemoving] = useState(false);
   useEffect(() => {
     let timeout: number;
     if (isRemoving) {
       timeout = setTimeout(() => {
         setIsVisible(false);
+            setOfflineReady(false);
+            setNeedRefresh(false);
       }, 1500); // 1.2s for animation + 300ms for fade out
     }
     return () => clearTimeout(timeout);
   }, [isRemoving]);
+
+
+
 
   const handleRemove = () => {
     setIsRemoving(true);
   };
   function close() {
     handleRemove();
-    setOfflineReady(false);
-    setNeedRefresh(false);
+
   }
 
   return (
     <div className="w-full flex justify-center items-center">
-      {isVisible && (
+      {(offlineReady || needRefresh) && (
         <div
           className="w-full flex gap-2 circle-to-pill bg-base-200 "
           data-remove={isRemoving ? true : undefined}>
           <div role="alert" className="alert alert-sm">
             <AlertCircle />
             {offlineReady ? (
-              <span className="line-clamp-1">App ready to work offline</span>
+              <span className="line-clamp-1">App is ready to work offline</span>
             ) : (
               <span className="line-clamp-1">
                 New content available, click on reload button to update.
               </span>
             )}
-          </div>
+            <div className="flex gap-2 justify-center items-center">
+              {needRefresh && (
+                <button
+                  className="btn btn-outline btn-sm"
+                  onClick={() => {
+                    updateServiceWorker(true);
+                    handleRemove();
+                  }}>
+                  Reload
+                </button>
+              )}
 
-          <div className="flex gap-2 justify-center items-center">
-            {needRefresh && (
               <button
                 className="btn btn-outline btn-sm"
                 onClick={() => {
-                  updateServiceWorker(true);
-                  handleRemove();
+                  close();
                 }}>
-                Reload
+                Close
               </button>
-            )}
-
-            <button
-              className="btn btn-outline btn-sm"
-              onClick={() => {
-                close();
-              }}>
-              Close
-            </button>
+            </div>
           </div>
         </div>
       )}
