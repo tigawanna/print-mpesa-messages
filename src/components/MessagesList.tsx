@@ -12,22 +12,7 @@ export function MessagesList({ printing = false, messages, setMessages }: Messag
   function removeMessage(index: number) {
     setMessages((prev) => prev.filter((_, i) => i !== index));
   }
-  function shiftMessage(index: number) {
-    setMessages((prev) => {
-      const newMessages = [...prev];
-      newMessages.splice(index, 1);
-      return newMessages;
-    });
-  }
-  function mergeMessage(idx1: number, idx2: number) {
-    setMessages((prev) => {
-      const newMessages = [...prev];
-    //   newMessages[idx1] = newMessages[idx1] + " \n" + newMessages[idx2];
-      newMessages.splice(idx1, 1, {id:newMessages[idx1].id,text:newMessages[idx1].text + " \n" + newMessages[idx2].text});
-      newMessages.splice(idx2, 1);
-      return newMessages;
-    });
-  }
+
   return (
     <div className="w-full h-full flex flex-col gap-3 py-2 px-5 ">
 
@@ -62,6 +47,18 @@ export function MessagesList({ printing = false, messages, setMessages }: Messag
               );
             }
             //   is a file
+            if (msg.image) {
+              const imageUrl = URL.createObjectURL(msg.image);
+              return (
+                <SingleRow key={msg.id} id={index.toString()}>
+                  <img
+                    className="w-full h-full object-cover rounded-lg"
+                    src={imageUrl}
+                    alt="image"
+                  />
+                </SingleRow>
+              );
+            }
           })}
         </SortableContext>
 

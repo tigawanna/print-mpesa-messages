@@ -1,5 +1,4 @@
-import { useEvent } from "@dnd-kit/utilities";
-import { Image, ImagePlus } from "lucide-react";
+import { ImagePlus } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 type Message = { id: number; text?: string; image?: File };
@@ -61,14 +60,14 @@ export function ImageArea({ setMessages }: TextAreaProps) {
     }
   }, [image]);
   return (
-    <div className="w-full h-full flex flex-col gap-1 items-center justify-center relative px-4">
+    <div className="w-full  flex gap-1 items-center ">
+      <div className="modal-action">
       <input
         type="file"
         className="file-input file-input-bordered w-full max-w-xs"
         onChange={(e) => setImage(e.target.files![0])}
       />
-      <div className="modal-action">
-        <form method="dialog">
+        <form method="dialog" >
           {/* if there is a button in form, it will close the modal */}
           <button className="btn">Close</button>
         </form>
@@ -106,14 +105,21 @@ export function MessageInputModals({setMessages}: TextAreaProps) {
           <h3 className="font-bold text-lg p-2">Paste in mpesa messages</h3>
           <TextArea setMessages={setMessages} />
         </div>
+        {/* will close the modal if clicked outside */}
+        <form method="dialog" className="modal-backdrop">
+          <button>close</button>
+        </form>
       </dialog>
       {/* image dialog */}
       <dialog ref={imageDialogRef} id="image-input-modal" className="modal">
-        <div className="modal-box">
-          <h3 className="font-bold text-lg">Image go here</h3>
-          <ImageArea setMessages={setMessages}/>
-
+        <div className="modal-box gap-1">
+          <h3 className="font-bold text-lg ">Add mpesa screenshot/image</h3>
+          <ImageArea setMessages={setMessages} />
         </div>
+        {/* will close the modal if clicked outside */}
+        <form method="dialog" className="modal-backdrop">
+          <button>close</button>
+        </form>
       </dialog>
     </>
   );
