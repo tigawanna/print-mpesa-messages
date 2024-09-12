@@ -1,6 +1,7 @@
-import { ChevronDown, ChevronUp, GripVertical, Minus, X } from "lucide-react";
+import { ChevronDown, ChevronUp, GripVertical, Minus, RotateCcw, RotateCw, X } from "lucide-react";
 import { arrayMove, SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { SingleRow } from "./SingleRow";
+import { useState } from "react";
 type Message = { id: number; text?: string; image?: File };
 interface MessagesListProps {
   printing?: boolean;
@@ -46,16 +47,7 @@ export function MessagesList({ printing = false, messages, setMessages }: Messag
             if (msg.image) {
               const imageUrl = URL.createObjectURL(msg.image);
               return (
-                <div className="w-full flex justify-between gap-1  rounded-lg">
-                  <SingleRow key={msg.id} id={index.toString()}>
-                    <img
-                      className="w-full h-full min-h-[20vh] object-cover rounded-lg"
-                      src={imageUrl}
-                      alt="image"
-                    />
-                  </SingleRow>
-                <MessagesRowActions index={index} printing={printing} setMessages={setMessages}/>
-                </div>
+            <MessagesListImageRow index={index} msg={msg} printing={printing} setMessages={setMessages}/>
               );
             }
           })}
@@ -65,6 +57,37 @@ export function MessagesList({ printing = false, messages, setMessages }: Messag
   );
 }
 
+
+
+interface MessagesListImageRowProps {
+  msg: Message;
+  index: number;
+  printing?: boolean;
+  setMessages?: React.Dispatch<React.SetStateAction<Message[]>>;
+}
+
+export function MessagesListImageRow({
+  index,
+  msg,
+  printing = false,
+  setMessages,
+}: MessagesListImageRowProps) {
+
+  if (!msg.image) return null;
+  const imageUrl = URL.createObjectURL(msg.image);
+  return (
+    <div className="w-full flex justify-between gap-1  rounded-lg">
+      <SingleRow key={msg.id} id={index.toString()}>
+        <img
+          className="w-full h-full min-h-[20vh] object-cover rounded-lg"
+          src={imageUrl}
+          alt="image"
+        />
+      </SingleRow>
+      <MessagesRowActions index={index} printing={printing} setMessages={setMessages} />
+    </div>
+  );
+}
 
 
 interface MessagesRowActionsProps {
