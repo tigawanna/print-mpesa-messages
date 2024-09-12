@@ -19,7 +19,7 @@ import  { PWAStatusPill } from "./components/PWAStatusPill";
 
 
 function App() {
-  const [messages, setMessages] = useState<Message[]>(defaultMessage);
+  const [messages, setMessages] = useState<Message[]>([]);
   // console.log(" ==  messags  ==== ",messages)
   const [isPrinting, setIsPrinting] = useState(false);
   const sensors = useSensors(
@@ -68,31 +68,31 @@ function App() {
 
 export default App;
 
-const defaultMessage = [
-  {
-    id: 1,
-    text: "",
-  },
-  {
-    id: 2,
-    text: " SGN6KR18JQ Confirmed. Ksh7,000.00 sent to HFC Limited for account 2000080714 on 23/7/24 at 1 29 PM New M-PESA balance is Ksh4,405.66. Transaction cost, Ksh42.00.Amount you can transact within the day is 486,480.00. Use a unique M-PESA PIN to keep your money safe - don't use your date of birth as your PIN.\n",
-  },
-  {
-    id: 3,
-    text: " G-20\n",
-  },
+// const defaultMessage = [
+//   {
+//     id: 1,
+//     text: "",
+//   },
+//   {
+//     id: 2,
+//     text: " SGN6KR18JQ Confirmed. Ksh7,000.00 sent to HFC Limited for account 2000080714 on 23/7/24 at 1 29 PM New M-PESA balance is Ksh4,405.66. Transaction cost, Ksh42.00.Amount you can transact within the day is 486,480.00. Use a unique M-PESA PIN to keep your money safe - don't use your date of birth as your PIN.\n",
+//   },
+//   {
+//     id: 3,
+//     text: " G-20\n",
+//   },
 
-  {
-    id: 9,
-    text: " SGU4EDTDU0 Confirmed. Ksh10,000.00 sent to HFC Limited for account 2000080714 on 30/7/24 at 9 37 PM New M-PESA balance is Ksh0.00. Transaction cost, Ksh48.00.Amount you can transact within the day is 483,330.00. Use a unique M-PESA PIN to keep your money safe - don't use your date of birth as your PIN.\n",
-  },
+//   {
+//     id: 9,
+//     text: " SGU4EDTDU0 Confirmed. Ksh10,000.00 sent to HFC Limited for account 2000080714 on 30/7/24 at 9 37 PM New M-PESA balance is Ksh0.00. Transaction cost, Ksh48.00.Amount you can transact within the day is 483,330.00. Use a unique M-PESA PIN to keep your money safe - don't use your date of birth as your PIN.\n",
+//   },
 
-  {
-    id: 18,
-    text: " janetmkanyika.jm@gmail.com\n",
-  },
-  {
-    id: 19,
-    text: " SI57JJZNKB Confirmed. Ksh58,800.00 sent to HFC Limited for account 2000080714 on 5/9/24 at 6 18 PM New M-PESA balance is Ksh3,833.33. Transaction cost, Ksh108.00.Amount you can transact within the day is 439,180.00. Use a unique M-PESA PIN to keep your money safe - don't use your date of birth as your PIN.",
-  },
-];
+//   {
+//     id: 18,
+//     text: " janetmkanyika.jm@gmail.com\n",
+//   },
+//   {
+//     id: 19,
+//     text: " SI57JJZNKB Confirmed. Ksh58,800.00 sent to HFC Limited for account 2000080714 on 5/9/24 at 6 18 PM New M-PESA balance is Ksh3,833.33. Transaction cost, Ksh108.00.Amount you can transact within the day is 439,180.00. Use a unique M-PESA PIN to keep your money safe - don't use your date of birth as your PIN.",
+//   },
+// ];
