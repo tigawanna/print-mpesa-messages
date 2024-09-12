@@ -112,14 +112,14 @@ export function MessageInputModals({ setMessages }: TextAreaProps) {
   }, []);
   return (
     <>
-      <div className="fixed bottom-[5%] right-[25%] flex gap-2">
+      <div className="fixed bottom-[5%] right-[25%] flex gap-5">
         <button
-          className="btn btn-sm btn-primary "
+          className="btn btn-sm btn-primary space-x-2"
           onClick={() => textDialogRef.current?.showModal()}>
           text
         </button>
         <button
-          className="btn btn-sm btn-primary "
+          className="btn btn-sm btn-primary space-x-2 "
           onClick={() => imageDialogRef.current?.showModal()}>
           <ImagePlus />
         </button>
