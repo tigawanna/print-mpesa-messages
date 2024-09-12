@@ -1,7 +1,8 @@
 import { ImagePlus } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
-type Message = { id: number; text?: string; image?: File };
+import { Message } from "./types";
+
 interface TextAreaProps {
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
 }

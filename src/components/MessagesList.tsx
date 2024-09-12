@@ -5,12 +5,12 @@ type Message = { id: number; text?: string; image?: File };
 interface MessagesListProps {
   printing?: boolean;
   messages: Message[];
-  setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
+  setMessages?: React.Dispatch<React.SetStateAction<Message[]>>;
 }
 
 export function MessagesList({ printing = false, messages, setMessages }: MessagesListProps) {
   function removeMessage(index: number) {
-    setMessages((prev) => prev.filter((_, i) => i !== index));
+    setMessages?.((prev) => prev.filter((_, i) => i !== index));
   }
 
   return (
@@ -35,7 +35,7 @@ export function MessagesList({ printing = false, messages, setMessages }: Messag
                     )}
                     <p className="w-full">{msg.text}</p>
                     {!printing && (
-                      <div className="h-full p-2  bg-base-200 group has-[:hover]:bg-error">
+                      <div className="h-full p-2  ">
                         <X
                           className="size-4   cursor-pointer"
                           onClick={() => removeMessage(index)}

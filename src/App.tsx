@@ -9,15 +9,16 @@ import {
   closestCorners,
   DragEndEvent,
 } from "@dnd-kit/core";
-import { arrayMove,sortableKeyboardCoordinates } from "@dnd-kit/sortable";
+import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { MessageInputModals } from "./components/MessageInputs";
 import { MessagesList } from "./components/MessagesList";
-
-
-type Message = { id: number; text?: string; image?: File };
+import { Message } from "./components/types";
+import { PrintMessages } from "./components/PrintMessages";
+import { Printer, X } from "lucide-react";
 
 function App() {
   const [messages, setMessages] = useState<Message[]>(defaultMessage);
+  const [isPrinting, setIsPrinting] = useState(false);
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -25,29 +26,39 @@ function App() {
     })
   );
 
-
-
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
-    if(!over || !active) return
+    if (!over || !active) return;
     if (active.id === over?.id) return;
     setMessages((messages) => {
       // const originalPos = getMessagePos(Number.parseInt(active?.id.toString()));
       // const newPos = getMessagePos(over?.id.toString() as unknown as number);
       const originalPos = Number.parseInt(active?.id.toString());
       const newPos = Number.parseInt(over?.id.toString());
-      if(originalPos === newPos) return messages
-      if(originalPos > newPos) return arrayMove(messages, originalPos, newPos);
-      return arrayMove(messages,newPos, originalPos);
+      if (originalPos === newPos) return messages;
+      if (originalPos > newPos) return arrayMove(messages, originalPos, newPos);
+      return arrayMove(messages, newPos, originalPos);
     });
   };
 
   return (
-    <div className="min-h-screen w-full h-full flex flex-col bg-base-100 text-base-content justify-center items-center p-2">
-      <div className="text-2xl">uwu</div>
+    <div className="min-h-screen w-full h-full flex flex-col  justify-center items-center p-2">
       <DndContext sensors={sensors} collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
-        <MessagesList messages={messages} setMessages={setMessages} />
+        {isPrinting ? (
+          <PrintMessages messages={messages} />
+        ) : (
+          <MessagesList messages={messages} setMessages={setMessages} />
+        )}
       </DndContext>
+      <button
+        className="btn btn-primary fixed bottom-[10%] left-[5%]"
+        onClick={() => setIsPrinting(!isPrinting)}>
+        {isPrinting ? (
+          <X className="" />
+        ) : (
+          <Printer className="" />
+        )}
+      </button>
 
       <MessageInputModals setMessages={setMessages} />
     </div>
@@ -74,7 +85,6 @@ const defaultMessage = [
     id: 9,
     text: " SGU4EDTDU0 Confirmed. Ksh10,000.00 sent to HFC Limited for account 2000080714 on 30/7/24 at 9 37 PM New M-PESA balance is Ksh0.00. Transaction cost, Ksh48.00.Amount you can transact within the day is 483,330.00. Use a unique M-PESA PIN to keep your money safe - don't use your date of birth as your PIN.\n",
   },
-
 
   {
     id: 18,
