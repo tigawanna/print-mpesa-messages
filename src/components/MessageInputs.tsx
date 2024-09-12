@@ -40,10 +40,10 @@ export function TextArea({ setMessages }: TextAreaProps) {
       />
    
       <div className="modal-action w-full gap-4">
+        <form method="dialog">
       <button className="btn btn-sm btn-primary" onClick={appendMessage}>
         add to list
       </button>
-        <form method="dialog">
           {/* if there is a button in form, it will close the modal */}
           <button className="btn btn-sm btn-error">Close</button>
         </form>
@@ -52,7 +52,11 @@ export function TextArea({ setMessages }: TextAreaProps) {
   );
 }
 
-export function ImageArea({ setMessages }: TextAreaProps) {
+interface ImageAreaProps {
+  setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
+  imageDialogRef: React.MutableRefObject<HTMLDialogElement | null>;
+}
+export function ImageArea({ setMessages,imageDialogRef }: ImageAreaProps) {
   const [image, setImage] = useState<File | null>(null);
   useEffect(() => {
     if (image) {
@@ -65,7 +69,10 @@ export function ImageArea({ setMessages }: TextAreaProps) {
       <input
         type="file"
         className="file-input file-input-bordered w-full max-w-xs"
-        onChange={(e) => setImage(e.target.files![0])}
+        onChange={(e) => {
+          setImage(e.target.files![0])
+          imageDialogRef.current?.close();
+        }}
       />
         <form method="dialog" >
           {/* if there is a button in form, it will close the modal */}
@@ -114,7 +121,7 @@ export function MessageInputModals({setMessages}: TextAreaProps) {
       <dialog ref={imageDialogRef} id="image-input-modal" className="modal">
         <div className="modal-box gap-1">
           <h3 className="font-bold text-lg ">Add mpesa screenshot/image</h3>
-          <ImageArea setMessages={setMessages} />
+          <ImageArea setMessages={setMessages} imageDialogRef={imageDialogRef}/>
         </div>
         {/* will close the modal if clicked outside */}
         <form method="dialog" className="modal-backdrop">

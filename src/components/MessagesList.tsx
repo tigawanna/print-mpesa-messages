@@ -28,7 +28,7 @@ export function MessagesList({ printing = false, messages, setMessages }: Messag
                     minHeight: msg.text.length > 100 ? "18vh" : "",
                   }}
                   key={msg.id}
-                  className="w-full flex justify-between gap-1  rounded-lg">
+                  className="w-full max-h-[45vh]  flex justify-between gap-1  rounded-lg">
                   <SingleRow key={msg.id} id={index.toString()}>
                     <div className="w-full flex justify-between  rounded-lg">
                       {!printing && (
@@ -45,7 +45,7 @@ export function MessagesList({ printing = false, messages, setMessages }: Messag
             }
             //   is a file
             if (msg.image) {
-              const imageUrl = URL.createObjectURL(msg.image);
+
               return (
             <MessagesListImageRow index={index} msg={msg} printing={printing} setMessages={setMessages}/>
               );
@@ -76,10 +76,10 @@ export function MessagesListImageRow({
   if (!msg.image) return null;
   const imageUrl = URL.createObjectURL(msg.image);
   return (
-    <div className="w-full flex justify-between gap-1  rounded-lg">
+    <div className=" w-full flex justify-between gap-1  rounded-lg">
       <SingleRow key={msg.id} id={index.toString()}>
         <img
-          className="w-full h-full min-h-[20vh] object-cover rounded-lg"
+          className="w-full h-full min-h-[20vh] max-h-[45vh]  object-cover rounded-lg"
           src={imageUrl}
           alt="image"
         />
