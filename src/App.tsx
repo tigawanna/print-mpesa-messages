@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { TextArea } from "./components/MessageInputs";
-import { MessagesList } from "./components/MessagesList";
+
 import {
   DndContext,
   KeyboardSensor,
@@ -11,6 +10,9 @@ import {
   DragEndEvent,
 } from "@dnd-kit/core";
 import { arrayMove,sortableKeyboardCoordinates } from "@dnd-kit/sortable";
+import { MessageInputModals } from "./components/MessageInputs";
+import { MessagesList } from "./components/MessagesList";
+
 
 type Message = { id: number; text?: string; image?: File };
 
@@ -44,9 +46,10 @@ function App() {
     <div className="min-h-screen w-full h-full flex flex-col bg-base-100 text-base-content justify-center items-center p-2">
       <div className="text-2xl">uwu</div>
       <DndContext sensors={sensors} collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
-        <MessagesList  messages={messages} setMessages={setMessages} />
+        <MessagesList messages={messages} setMessages={setMessages} />
       </DndContext>
-      <TextArea setMessages={setMessages} />
+
+      <MessageInputModals setMessages={setMessages} />
     </div>
   );
 }
