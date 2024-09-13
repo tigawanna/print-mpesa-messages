@@ -5,10 +5,14 @@ import { Message } from "./types";
 
 interface TextAreaProps {
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
+  messageToUpdate?: {
+    idx: number;
+    text: string;
+  };
 }
 
-export function TextArea({ setMessages }: TextAreaProps) {
-  const [input, setInput] = useState("");
+export function TextArea({ setMessages, messageToUpdate }: TextAreaProps) {
+  const [input, setInput] = useState(messageToUpdate?.text || "");
   function handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setInput(e.target.value);
   }
@@ -31,15 +35,34 @@ export function TextArea({ setMessages }: TextAreaProps) {
     if (input.includes("---")) {
       const message_chunks = input.split("---");
       message_chunks.forEach((message) => {
-        setMessages((prev) => [...prev, { id: Math.floor(Math.random() * 1000), text: message.trim() }]);
+        setMessages((prev) => [
+          ...prev,
+          { id: Math.floor(Math.random() * 1000), text: message.trim() },
+        ]);
       });
-          setInput("");
+      setInput("");
       return;
     }
     const randomNumber = Math.floor(Math.random() * 1000);
     setMessages((prev) => [...prev, { id: randomNumber, text: input }]);
     // setMessages(prev => [...prev, input])
     setInput("");
+  }
+
+  function insertMessages({ idx, text }: { idx: number; text: string }) {
+    const newTextChunks = text.split("---");
+    console.log(newTextChunks);
+    const spliceFrom = idx - 1
+    const spliceTo = idx + newTextChunks.length - 1;
+    const newTextChunksArray = newTextChunks.map((message) => ({
+      id: Math.floor(Math.random() * 1000),
+      text: message.trim(),
+    }));
+    setMessages((prev) => [
+      ...prev.slice(0, spliceFrom),
+      ...newTextChunksArray,
+      ...prev.slice(spliceTo),
+    ]);
   }
 
   return (
@@ -50,20 +73,28 @@ export function TextArea({ setMessages }: TextAreaProps) {
         onChange={handleChange}
         placeholder={`
           Paste mpesa messages from whatsapp for auto parsing 
-          or 
-          copy individual messages separated with 
-          ---
+                              or 
+              copy individual messages separated with 
+                             ---
           
           `}
       />
 
       <div className="modal-action w-full gap-4">
-        <form method="dialog">
-          <button className="btn btn-sm btn-primary" onClick={appendMessage}>
-            add to list
-          </button>
+        <form method="dialog" className="flex gap-2">
+          {messageToUpdate?.idx ? (
+            <button
+              className="btn btn-sm text-secondary"
+              onClick={() => insertMessages({ idx: messageToUpdate.idx, text: input })}>
+              insert
+            </button>
+          ) : (
+            <button className="btn btn-sm text-primary" onClick={appendMessage}>
+              appendt
+            </button>
+          )}
           {/* if there is a button in form, it will close the modal */}
-          <button className="btn btn-sm btn-error">Close</button>
+          <button className="btn btn-sm text-error">Close</button>
         </form>
       </div>
     </div>
@@ -112,14 +143,14 @@ export function MessageInputModals({ setMessages }: TextAreaProps) {
   }, []);
   return (
     <>
-      <div className="fixed bottom-[5%] right-[25%] flex gap-5">
+      <div className="fixed bottom-[5%] right-[10%] flex gap-5">
         <button
-          className="btn btn-sm btn-primary space-x-2"
+          className="btn btn-sm text-primary space-x-2"
           onClick={() => textDialogRef.current?.showModal()}>
           text
         </button>
         <button
-          className="btn btn-sm btn-primary space-x-2 "
+          className="btn btn-sm text-primary space-x-2 "
           onClick={() => imageDialogRef.current?.showModal()}>
           <ImagePlus />
         </button>

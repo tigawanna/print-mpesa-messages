@@ -48,7 +48,7 @@ export function PWAStatusPill(){
   }
 
   return (
-    <div className="w-full flex justify-center items-center">
+    <div className="w-full flex justify-center items-center ">
       {(offlineReady || needRefresh) && (
         <div
           className="w-full flex gap-2 circle-to-pill bg-base-200 "
