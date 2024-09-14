@@ -52,7 +52,7 @@ export function TextArea({ setMessages, messageToUpdate }: TextAreaProps) {
   function insertMessages({ idx, text }: { idx: number; text: string }) {
     const newTextChunks = text.split("---");
     console.log(newTextChunks);
-    const spliceFrom = idx - 1
+    const spliceFrom = idx - 1;
     const spliceTo = idx + newTextChunks.length - 1;
     const newTextChunksArray = newTextChunks.map((message) => ({
       id: Math.floor(Math.random() * 1000),
@@ -66,9 +66,9 @@ export function TextArea({ setMessages, messageToUpdate }: TextAreaProps) {
   }
 
   return (
-    <div className="w-full h-full flex flex-col gap-1 items-center justify-center ">
+    <div className="flex h-full w-full flex-col items-center justify-center gap-1">
       <TextareaAutosize
-        className="min-h-[30vh] h-full textarea w-full"
+        className="textarea h-full min-h-[30vh] w-full"
         value={input}
         onChange={handleChange}
         placeholder={`
@@ -85,7 +85,10 @@ export function TextArea({ setMessages, messageToUpdate }: TextAreaProps) {
           {messageToUpdate?.idx ? (
             <button
               className="btn btn-sm text-secondary"
-              onClick={() => insertMessages({ idx: messageToUpdate.idx, text: input })}>
+              onClick={() =>
+                insertMessages({ idx: messageToUpdate.idx, text: input })
+              }
+            >
               insert
             </button>
           ) : (
@@ -113,7 +116,7 @@ export function ImageArea({ setMessages, imageDialogRef }: ImageAreaProps) {
     }
   }, [image]);
   return (
-    <div className="w-full  flex gap-1 items-center ">
+    <div className="flex w-full items-center gap-1">
       <div className="modal-action">
         <input
           type="file"
@@ -136,8 +139,12 @@ export function MessageInputModals({ setMessages }: TextAreaProps) {
   const textDialogRef = useRef<null | HTMLDialogElement>(null);
   const imageDialogRef = useRef<null | HTMLDialogElement>(null);
   useEffect(() => {
-    const textInputDialog = document.getElementById("text-input-modal") as HTMLDialogElement;
-    const imageInputDialog = document.getElementById("image-input-modal") as HTMLDialogElement;
+    const textInputDialog = document.getElementById(
+      "text-input-modal",
+    ) as HTMLDialogElement;
+    const imageInputDialog = document.getElementById(
+      "image-input-modal",
+    ) as HTMLDialogElement;
     textDialogRef.current = textInputDialog;
     imageDialogRef.current = imageInputDialog;
   }, []);
@@ -145,20 +152,22 @@ export function MessageInputModals({ setMessages }: TextAreaProps) {
     <>
       <div className="fixed bottom-[5%] right-[10%] flex gap-5">
         <button
-          className="btn btn-sm text-primary space-x-2"
-          onClick={() => textDialogRef.current?.showModal()}>
+          className="btn btn-sm space-x-2 text-primary"
+          onClick={() => textDialogRef.current?.showModal()}
+        >
           text
         </button>
         <button
-          className="btn btn-sm text-primary space-x-2 "
-          onClick={() => imageDialogRef.current?.showModal()}>
+          className="btn btn-sm space-x-2 text-primary"
+          onClick={() => imageDialogRef.current?.showModal()}
+        >
           <ImagePlus />
         </button>
       </div>
       {/* text dialog */}
       <dialog ref={textDialogRef} id="text-input-modal" className="modal">
         <div className="modal-box gap-2">
-          <h3 className="font-bold text-lg p-2">Paste in mpesa messages</h3>
+          <h3 className="p-2 text-lg font-bold">Paste in mpesa messages</h3>
           <TextArea setMessages={setMessages} />
         </div>
         {/* will close the modal if clicked outside */}
@@ -169,8 +178,11 @@ export function MessageInputModals({ setMessages }: TextAreaProps) {
       {/* image dialog */}
       <dialog ref={imageDialogRef} id="image-input-modal" className="modal">
         <div className="modal-box gap-1">
-          <h3 className="font-bold text-lg ">Add mpesa screenshot/image</h3>
-          <ImageArea setMessages={setMessages} imageDialogRef={imageDialogRef} />
+          <h3 className="text-lg font-bold">Add mpesa screenshot/image</h3>
+          <ImageArea
+            setMessages={setMessages}
+            imageDialogRef={imageDialogRef}
+          />
         </div>
         {/* will close the modal if clicked outside */}
         <form method="dialog" className="modal-backdrop">

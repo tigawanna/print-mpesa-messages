@@ -1,11 +1,9 @@
-interface MessageListCardsProps {
+interface MessageListCardsProps {}
 
-}
-
-export function MessageListCards({}:MessageListCardsProps){
-return (
- <div className='w-full h-full flex flex-col items-center justify-center'>
-    one message card
- </div>
-);
+export function MessageListCards({}: MessageListCardsProps) {
+  return (
+    <div className="flex h-full w-full flex-col items-center justify-center">
+      one message card
+    </div>
+  );
 }

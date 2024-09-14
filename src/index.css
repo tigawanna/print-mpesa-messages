@@ -1,13 +1,9 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-
-
-
 .circle-to-pill {
-  width: 80%;  
+  width: 80%;
   border-radius: 50px;
   animation: circleToPill 1s ease-in forwards;
   transition: opacity 0.3s ease-out;

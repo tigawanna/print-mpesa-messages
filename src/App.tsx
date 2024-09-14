@@ -15,9 +15,8 @@ import { MessagesList } from "./components/MessagesList";
 import { Message } from "./components/types";
 import { PrintMessages } from "./components/PrintMessages";
 import { Printer, X } from "lucide-react";
-import  { PWAStatusPill } from "./components/PWAStatusPill";
+import { PWAStatusPill } from "./components/PWAStatusPill";
 import { IntroComponent } from "./components/IntroComponent";
-
 
 function App() {
   const [messages, setMessages] = useState<Message[]>(defaultList());
@@ -27,7 +26,7 @@ function App() {
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
   );
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -44,25 +43,29 @@ function App() {
       return arrayMove(messages, newPos, originalPos);
     });
   };
-// return (
-//   <div className="min-h-screen w-full h-full flex flex-col  items-center gap-3  p-2">
-//     {/* <div className="circle-to-pill ">pill aniamtion</div> */}
-//     <PWAStatusPill />
-//     <IntroComponent />
-//     <button
-//       className="btn btn-primary fixed bottom-[5%] left-[5%]"
-//       onClick={() => setIsPrinting(!isPrinting)}>
-//       {isPrinting ? <X className="" /> : <Printer className="" />}
-//     </button>
-//     <MessageInputModals setMessages={setMessages} />
-//   </div>
-// );
+  // return (
+  //   <div className="min-h-screen w-full h-full flex flex-col  items-center gap-3  p-2">
+  //     {/* <div className="circle-to-pill ">pill aniamtion</div> */}
+  //     <PWAStatusPill />
+  //     <IntroComponent />
+  //     <button
+  //       className="btn btn-primary fixed bottom-[5%] left-[5%]"
+  //       onClick={() => setIsPrinting(!isPrinting)}>
+  //       {isPrinting ? <X className="" /> : <Printer className="" />}
+  //     </button>
+  //     <MessageInputModals setMessages={setMessages} />
+  //   </div>
+  // );
   return (
-    <div className="min-h-screen w-full h-full flex flex-col  justify-center  p-2">
+    <div className="flex h-full min-h-screen w-full flex-col justify-center p-2">
       {/* <div className="circle-to-pill ">pill aniamtion</div> */}
       <PWAStatusPill />
-      {messages.length === 0 && <IntroComponent/>}
-      <DndContext sensors={sensors} collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
+      {messages.length === 0 && <IntroComponent />}
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCorners}
+        onDragEnd={handleDragEnd}
+      >
         {isPrinting ? (
           <PrintMessages messages={messages} />
         ) : (
@@ -70,8 +73,9 @@ function App() {
         )}
       </DndContext>
       <button
-        className="btn text-primary fixed bottom-[5%] left-[5%]"
-        onClick={() => setIsPrinting(!isPrinting)}>
+        className="btn fixed bottom-[5%] left-[5%] text-primary"
+        onClick={() => setIsPrinting(!isPrinting)}
+      >
         {isPrinting ? <X className="" /> : <Printer className="" />}
       </button>
       <MessageInputModals setMessages={setMessages} />
@@ -112,7 +116,7 @@ export default App;
 // ];
 
 function defaultList() {
-  if(!import.meta.env.DEV) return []
+  if (!import.meta.env.DEV) return [];
   return [
     {
       id: 318,
