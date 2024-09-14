@@ -3,7 +3,7 @@ import React from "react";
 import { useRef } from "react";
 import ReactToPrint from "react-to-print";
 import { Message } from "./types";
-import { MessagesList } from "./MessagesList";
+import { PrintMessagesList } from "./MessagesList";
 
 interface PrintMessagesProps {
   messages: Message[];
@@ -39,7 +39,7 @@ export class PrintThis extends React.Component<MyProps, {}> {
   render() {
     return (
       <div className="flex h-full w-full flex-col p-2">
-        <MessagesList messages={this.props.messages} printing />
+        <PrintMessagesList messages={this.props.messages} printing />
       </div>
     );
   }

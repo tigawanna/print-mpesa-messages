@@ -1,18 +1,8 @@
-import {
-  ChevronDown,
-  ChevronUp,
-  Edit,
-  GripVertical,
-  Minus,
-} from "lucide-react";
-import {
-  arrayMove,
-  SortableContext,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-import { SingleRow } from "./SingleRow";
-import { useEffect, useRef } from "react";
+import { ChevronDown, ChevronUp, Edit, Minus } from "lucide-react";
+import { arrayMove } from "@dnd-kit/sortable";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { TextArea } from "./MessageInputs";
+import { breakMesagesArrayInotPages } from "./utils/paging-helpers";
 
 type Message = { id: number; text?: string; image?: File };
 interface MessagesListProps {
@@ -21,71 +11,119 @@ interface MessagesListProps {
   setMessages?: React.Dispatch<React.SetStateAction<Message[]>>;
 }
 
-// const A4height = 1100;
-// const A4width = 790;
 
-export function MessagesList({
+
+export function PrintMessagesList({
   printing = false,
   messages,
   setMessages,
 }: MessagesListProps) {
-  //  condider a recuursive list
 
-  const listContainerRef = useRef<null | HTMLDivElement>(null);
-  const listHeight = listContainerRef.current?.clientHeight;
-  const windowHeight = window.innerHeight;
-  console.log("window height", windowHeight);
-  console.log("client  listHeight", listHeight);
-  return (
-    <div
-      ref={listContainerRef}
-      className="flex h-full w-full flex-col gap-3 px-5 py-2"
-    >
-      {messages.map((msg, index) => {
-        if (!msg) return null;
-        // is a string
-        if (typeof msg.text === "string") {
-          if (msg.text.length === 0) return null;
+  const messagePages = useMemo(() => {
+  return breakMesagesArrayInotPages(messages);
+  }, [messages]);
 
-          return (
-            <div
-              id={msg.id.toString()}
-              style={{
-                minHeight: msg.text.length > 100 ? "20vh" : "",
-              }}
-              key={msg.id}
-              className="flex w-full justify-between gap-1 rounded-lg bg-base-200 p-2 transition-all duration-700 animate-in zoom-in-95"
-            >
-              <MessagesRowShiftActions
-                index={index}
-                printing={printing}
-                setMessages={setMessages}
-              />
-              <p className="w-full">{msg.text}</p>
+  const [messagePagesArr,] = useState(
+    Object.entries(messagePages),
+  );
 
-              <MessagesRowActions
+return (
+    <div className="flex h-full w-full flex-col gap-3 px-5 py-2">
+      {messagePagesArr.map(([k, v]) => {
+        const messages = v.messages;
+        return (
+          <div key={k} className="flex h-[1100px] w-full flex-col items-center gap-10 border-b-8 border-b-accent px-5 py-2">
+            {messages.map((msg, index) => (
+              <MessagesListItem
+                key={msg.id}
                 msg={msg}
                 index={index}
                 printing={printing}
                 setMessages={setMessages}
               />
-            </div>
-          );
-        }
-        //   is a file
-        if (msg.image) {
-          return (
-            <MessagesListImageRow
-              index={index}
-              msg={msg}
-              printing={printing}
-              setMessages={setMessages}
-            />
-          );
-        }
+            ))}
+          </div>
+        );
       })}
     </div>
   );
+}
+export function MessagesList({
+  printing = false,
+  messages,
+  setMessages,
+}: MessagesListProps) {
+  
+
+
+return (
+    <div className="flex h-full w-full flex-col gap-3 px-5 py-2">
+                  {messages.map((msg, index) => (
+              <MessagesListItem
+                key={msg.id}
+                msg={msg}
+                index={index}
+                printing={printing}
+                setMessages={setMessages}
+              />
+            ))}
+
+    </div>
+  );
+}
+
+interface MessagesListItemProps {
+  msg: Message;
+  index: number;
+  printing?: boolean;
+  setMessages?: React.Dispatch<React.SetStateAction<Message[]>>;
+}
+
+export function MessagesListItem({
+  index,
+  msg,
+  printing,
+  setMessages,
+}: MessagesListItemProps) {
+  if (!msg) return null;
+  // is a string
+  if (typeof msg.text === "string") {
+    if (msg.text.length === 0) return null;
+    return (
+      <div
+        id={msg.id.toString()}
+        key={msg.id}
+        className="flex w-full flex-col gap-1 rounded-lg bg-base-200 p-2 transition-all duration-700 animate-in zoom-in-95"
+      >
+        <div className="flex w-full items-center justify-between gap-2">
+          <MessagesRowShiftActions
+            index={index}
+            printing={printing}
+            setMessages={setMessages}
+          />
+          <p className="w-full text-lg"> {msg.text}</p>
+
+          <MessagesRowActions
+            msg={msg}
+            index={index}
+            printing={printing}
+            setMessages={setMessages}
+          />
+        </div>
+      </div>
+    );
+  }
+  //   is a file
+  if (msg.image) {
+    return (
+      <MessagesListImageRow
+        index={index}
+        msg={msg}
+        printing={printing}
+        setMessages={setMessages}
+      />
+    );
+  }
 }
 
 interface MessagesListImageRowProps {
@@ -105,6 +143,11 @@ export function MessagesListImageRow({
   const imageUrl = URL.createObjectURL(msg.image);
   return (
     <div className="flex w-full justify-between gap-1 rounded-lg">
+      <MessagesRowShiftActions
+        index={index}
+        printing={printing}
+        setMessages={setMessages}
+      />
       <img
         className="h-full max-h-[45vh] min-h-[20vh] w-full rounded-lg object-cover"
         src={imageUrl}
