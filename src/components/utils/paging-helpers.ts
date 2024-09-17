@@ -4,7 +4,7 @@ import { Message } from "../types";
 
 // const AVG_LINE_CHAR_COUNT_AT_20_PX = 45;
 export const A4_WIDTH = 790;
-export const LINE_COUNT_AT_20_PX = 45;
+export const LINE_COUNT_AT_20_PX = 40;
 
 export function countLinesinMessage(A4_WIDTH: number,msg?: Message) {
   return msg?.text ? Math.ceil((msg.text.length * 16) / A4_WIDTH) : 1;
