@@ -40,6 +40,7 @@ export class PrintThis extends React.Component<MyProps, {}> {
     return (
       <div className="flex h-full w-full flex-col p-2">
         <PrintMessagesList messages={this.props.messages} printing />
+        {/* <ReactPDFContainer /> */}
       </div>
     );
   }

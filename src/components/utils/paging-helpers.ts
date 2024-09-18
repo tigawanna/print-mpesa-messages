@@ -1,22 +1,25 @@
-// const A4_HEIGHT = 1100; // A4 height in pixels
-
 import { Message } from "../types";
 
 // const AVG_LINE_CHAR_COUNT_AT_20_PX = 45;
-export const A4_WIDTH = 790;
+export const A4_HEIGHT = 1100; // A4 height in pixels
+export const A4_WIDTH = 500;
 export const LINE_COUNT_AT_20_PX = 40;
 
-export function countLinesinMessage(A4_WIDTH: number,msg?: Message) {
+export function countLinesinMessage(A4_WIDTH: number, msg?: Message) {
   return msg?.text ? Math.ceil((msg.text.length * 16) / A4_WIDTH) : 1;
 }
-export function countLinesinMessageArray(A4_WIDTH: number,msg?: Message[]) {
+export function countLinesinMessageArray(A4_WIDTH: number, msg?: Message[]) {
   if (!msg) return 0;
   return msg.reduce((acc, msg) => {
-    return acc + countLinesinMessage(A4_WIDTH,msg);
+    return acc + countLinesinMessage(A4_WIDTH + 10, msg);
   }, 0);
 }
 
-export function handleItemLargerThanpage(currLineCount: number, curr: Message,  LINE_COUNT_AT_20_PX: number) {
+export function handleItemLargerThanpage(
+  currLineCount: number,
+  curr: Message,
+  LINE_COUNT_AT_20_PX: number,
+) {
   const extraPagesRequired = Math.ceil(currLineCount / LINE_COUNT_AT_20_PX);
   const nestedSubArray = [curr];
   for (let i = 0; i < extraPagesRequired; i++) {
@@ -52,47 +55,52 @@ export function getCurrentPagekey(
   return pagekey;
 }
 
-
 export function breakMesagesArrayInotPages(messages: Message[]) {
-    const messagePages = messages.reduce(
-      (acc, curr) => {
-        const currLineCount = countLinesinMessage(A4_WIDTH,curr);
-        const currentPageKey = getCurrentPagekey(
-          acc,
-          currLineCount,
-          LINE_COUNT_AT_20_PX,
-        );
-        const currentPage = acc?.[currentPageKey];
-        const currentPageTotalLineCount = countLinesinMessageArray(
-          A4_WIDTH,
-          currentPage?.messages,
-        );
-        const currentMessages = currentPage?.messages ?? [];
+  const messagePages = messages.reduce(
+    (acc, curr) => {
+      const currLineCount = countLinesinMessage(A4_WIDTH, curr);
+      const currentPageKey = getCurrentPagekey(
+        acc,
+        currLineCount,
+        LINE_COUNT_AT_20_PX,
+      );
+      const currentPage = acc?.[currentPageKey];
+      const currentPageTotalLineCount = countLinesinMessageArray(
+        A4_WIDTH,
+        currentPage?.messages,
+      );
+      const currentMessages = currentPage?.messages ?? [];
 
-        if (currentPageTotalLineCount + currLineCount <= LINE_COUNT_AT_20_PX) {
-          acc[currentPageKey] = {
-            totalLinesCount: currentPageTotalLineCount + currLineCount,
-            messages: [...currentMessages, curr],
-          };
-        } else if (
-          currentPageTotalLineCount + currLineCount >
-          LINE_COUNT_AT_20_PX
-        ) {
-          acc[currentPageKey + 1] = {
-            totalLinesCount: currLineCount,
-            messages: [...handleItemLargerThanpage(currLineCount, curr, LINE_COUNT_AT_20_PX)],
-          };
-        } else {
-          console.log("else block");
-        }
-        return acc;
-      },
-      {} as {
-        [pageKey: number]: {
-          messages: Message[];
-          totalLinesCount: number;
+      if (currentPageTotalLineCount + currLineCount <= LINE_COUNT_AT_20_PX) {
+        acc[currentPageKey] = {
+          totalLinesCount: currentPageTotalLineCount + currLineCount,
+          messages: [...currentMessages, curr],
         };
-      },
-    );
-    return messagePages;
+      } else if (
+        currentPageTotalLineCount + currLineCount >
+        LINE_COUNT_AT_20_PX
+      ) {
+        acc[currentPageKey + 1] = {
+          totalLinesCount: currLineCount,
+          messages: [
+            ...handleItemLargerThanpage(
+              currLineCount,
+              curr,
+              LINE_COUNT_AT_20_PX,
+            ),
+          ],
+        };
+      } else {
+        console.log("else block");
+      }
+      return acc;
+    },
+    {} as {
+      [pageKey: number]: {
+        messages: Message[];
+        totalLinesCount: number;
+      };
+    },
+  );
+  return messagePages;
 }

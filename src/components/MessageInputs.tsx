@@ -22,11 +22,11 @@ export function TextArea({ setMessages, messageToUpdate }: TextAreaProps) {
 
     if (input.startsWith("[")) {
       const message_chunks = input.split("[");
-      message_chunks.forEach((message) => {
+      message_chunks.forEach((message, idx) => {
         const message_body = message.split(":").slice(2).join(" ");
         setMessages((prev) => [
           ...prev,
-          { id: Math.floor(Math.random() * 1000), text: message_body },
+          { id: prev[idx].id + idx, text: message_body },
         ]);
       });
       setInput("");
@@ -34,10 +34,10 @@ export function TextArea({ setMessages, messageToUpdate }: TextAreaProps) {
     }
     if (input.includes("---")) {
       const message_chunks = input.split("---");
-      message_chunks.forEach((message) => {
+      message_chunks.forEach((message, idx) => {
         setMessages((prev) => [
           ...prev,
-          { id: Math.floor(Math.random() * 1000), text: message.trim() },
+          { id: prev[idx].id + idx, text: message.trim() },
         ]);
       });
       setInput("");
@@ -109,20 +109,32 @@ interface ImageAreaProps {
   imageDialogRef: React.MutableRefObject<HTMLDialogElement | null>;
 }
 export function ImageArea({ setMessages, imageDialogRef }: ImageAreaProps) {
-  const [image, setImage] = useState<File | null>(null);
+  const [imagelist, setImageList] = useState<FileList | null>(null);
   useEffect(() => {
-    if (image) {
-      setMessages((prev) => [...prev, { id: prev.length + 1, image }]);
+    if (imagelist !== null) {
+      const imagesarray = Array.from(imagelist);
+      setMessages((prev) => [
+        ...prev,
+        ...imagesarray.map((image, idx) => {
+          return {
+            id: prev.length + idx,
+            image,
+          };
+        }),
+      ]);
     }
-  }, [image]);
+  }, [imagelist]);
+
   return (
     <div className="flex w-full items-center gap-1">
       <div className="modal-action">
         <input
           type="file"
+          multiple={true}
+          accept=".jpg, .jpeg, .png , .svg , .webp"
           className="file-input file-input-bordered w-full max-w-xs"
           onChange={(e) => {
-            setImage(e.target.files![0]);
+            setImageList(e.target.files);
             imageDialogRef.current?.close();
           }}
         />

@@ -1,16 +1,17 @@
 
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}"
-    
-  ],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        print: { raw: "print" },
+        screen: { raw: "screen" },
+      },
+    },
   },
-  plugins: [require("daisyui"),require("tailwindcss-animate")],
+  plugins: [require("daisyui"), require("tailwindcss-animate")],
   daisyui: {
-    themes: ["light",],
+    themes: ["light"],
   },
-}
+};

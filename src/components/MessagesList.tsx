@@ -2,7 +2,8 @@ import { ChevronDown, ChevronUp, Edit, Minus } from "lucide-react";
 import { arrayMove } from "@dnd-kit/sortable";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { TextArea } from "./MessageInputs";
-import { breakMesagesArrayInotPages } from "./utils/paging-helpers";
+import { A4_WIDTH, breakMesagesArrayInotPages } from "./utils/paging-helpers";
+import { MessageImageCard } from "./MessageImageCard";
 
 type Message = { id: number; text?: string; image?: File };
 interface MessagesListProps {
@@ -11,37 +12,42 @@ interface MessagesListProps {
   setMessages?: React.Dispatch<React.SetStateAction<Message[]>>;
 }
 
-
-
 export function PrintMessagesList({
   printing = false,
   messages,
   setMessages,
 }: MessagesListProps) {
-
   const messagePages = useMemo(() => {
-  return breakMesagesArrayInotPages(messages);
+    return breakMesagesArrayInotPages(messages);
   }, [messages]);
 
-  const [messagePagesArr,] = useState(
-    Object.entries(messagePages),
-  );
+  const [messagePagesArr] = useState(Object.entries(messagePages));
 
-return (
+  return (
     <div className="flex h-full w-full flex-col gap-3 px-5 py-2">
       {messagePagesArr.map(([k, v]) => {
         const messages = v.messages;
         return (
-          <div key={k} className="flex h-[1100px] w-full flex-col items-center gap-10 border-b-8 border-b-accent px-5 py-2">
-            {messages.map((msg, index) => (
-              <MessagesListItem
-                key={msg.id}
-                msg={msg}
-                index={index}
-                printing={printing}
-                setMessages={setMessages}
-              />
-            ))}
+          <div
+            key={k}
+            // style={{
+            //   height: A4_HEIGHT-61,
+            // }}
+            className="page flex w-full flex-col items-center gap-10 border border-secondary"
+          >
+            {messages.map((msg, index) => {
+              if (!msg || (!msg.text && !msg.image)) return null;
+              if (msg?.text?.length === 0) return null;
+              return (
+                <MessagesListItem
+                  key={msg.id}
+                  msg={msg}
+                  index={index}
+                  printing={printing}
+                  setMessages={setMessages}
+                />
+              );
+            })}
           </div>
         );
       })}
@@ -53,21 +59,17 @@ export function MessagesList({
   messages,
   setMessages,
 }: MessagesListProps) {
-  
-
-
-return (
-    <div className="flex h-full w-full flex-col gap-3 px-5 py-2">
-                  {messages.map((msg, index) => (
-              <MessagesListItem
-                key={msg.id}
-                msg={msg}
-                index={index}
-                printing={printing}
-                setMessages={setMessages}
-              />
-            ))}
-
+  return (
+    <div className="flex h-full w-full flex-col items-center gap-3 px-5 py-2">
+      {messages.map((msg, index) => (
+        <MessagesListItem
+          key={msg.id}
+          msg={msg}
+          index={index}
+          printing={printing}
+          setMessages={setMessages}
+        />
+      ))}
     </div>
   );
 }
@@ -92,8 +94,11 @@ export function MessagesListItem({
     return (
       <div
         id={msg.id.toString()}
+        style={{
+          width: A4_WIDTH,
+        }}
         key={msg.id}
-        className="flex w-full flex-col gap-1 rounded-lg bg-base-200 p-2 transition-all duration-700 animate-in zoom-in-95"
+        className="flex flex-col gap-1 rounded-lg bg-base-200 p-2 transition-all duration-700 animate-in zoom-in-95"
       >
         <div className="flex w-full items-center justify-between gap-2">
           <MessagesRowShiftActions
@@ -116,7 +121,7 @@ export function MessagesListItem({
   //   is a file
   if (msg.image) {
     return (
-      <MessagesListImageRow
+      <MessageImageCard
         index={index}
         msg={msg}
         printing={printing}
@@ -141,6 +146,7 @@ export function MessagesListImageRow({
 }: MessagesListImageRowProps) {
   if (!msg.image) return null;
   const imageUrl = URL.createObjectURL(msg.image);
+
   return (
     <div className="flex w-full justify-between gap-1 rounded-lg">
       <MessagesRowShiftActions
