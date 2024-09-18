@@ -63,12 +63,7 @@ body {
   background: white;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
-.subpage {
-  padding: 1cm;
-  border: 5px red solid;
-  height: 239mm; /* .page height -40mm (20 off top/bottom) */
-  outline: 2cm #ffeaea solid;
-}
+
 
 @page {
   size: Letter;
