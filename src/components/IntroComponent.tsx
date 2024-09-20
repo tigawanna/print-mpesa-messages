@@ -1,6 +1,11 @@
-interface IntroComponentProps {}
+import { TextArea } from "./MessageInputs";
+import { Message } from "./types";
 
-export function IntroComponent({}: IntroComponentProps) {
+interface IntroComponentProps {
+  setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
+}
+
+export function IntroComponent({setMessages}: IntroComponentProps) {
   return (
     <div className="flex h-[90vh] w-full flex-col items-center justify-center gap-2 p-5">
       <h1 className="text-5xl font-bold">M-print</h1>
@@ -11,6 +16,7 @@ export function IntroComponent({}: IntroComponentProps) {
           print
         </p>
         Let's get printing ✨
+        <TextArea setMessages={setMessages} />
         <div className="flex w-full items-center justify-between">
           <p>👇 print them here </p>
           <p>add messages here 👇</p>

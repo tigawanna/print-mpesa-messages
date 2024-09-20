@@ -1,1 +1,11 @@
-export type Message = { id: number; text?: string; image?: File };
+export type Message = {
+  id: number;
+  order:number;
+  text?: {
+    content: string;
+  };
+  image?: {
+    file: File;
+    angle?: number;
+  };
+};

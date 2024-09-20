@@ -34,7 +34,7 @@ export function PrintMessagesList({
           >
             {messages.map((msg, index) => {
               if (!msg || (!msg.text && !msg.image)) return null;
-              if (msg?.text?.length === 0) return null;
+              if (msg?.text?.content.length === 0) return null;
               return (
                 <MessagesListItem
                   key={msg.id}

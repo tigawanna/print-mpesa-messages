@@ -1,4 +1,5 @@
 import { Message } from "../types";
+import { getLastOrder } from "./lists";
 
 // const AVG_LINE_CHAR_COUNT_AT_20_PX = 45;
 export const A4_HEIGHT = 1100; // A4 height in pixels
@@ -6,7 +7,7 @@ export const A4_WIDTH = 500;
 export const LINE_COUNT_AT_20_PX = 40;
 
 export function countLinesinMessage(A4_WIDTH: number, msg?: Message) {
-  return msg?.text ? Math.ceil((msg.text.length * 16) / A4_WIDTH) : 1;
+  return msg?.text ? Math.ceil((msg.text.content.length * 16) / A4_WIDTH) : 1;
 }
 export function countLinesinMessageArray(A4_WIDTH: number, msg?: Message[]) {
   if (!msg) return 0;
@@ -15,16 +16,29 @@ export function countLinesinMessageArray(A4_WIDTH: number, msg?: Message[]) {
   }, 0);
 }
 
-export function handleItemLargerThanpage(
-  currLineCount: number,
-  curr: Message,
-  LINE_COUNT_AT_20_PX: number,
-) {
+export function handleItemLargerThanpage({
+  curr,
+  LINE_COUNT_AT_20_PX,
+  currLineCount,
+  messages,
+}: {
+  messages: Message[];
+  currLineCount: number;
+  curr: Message;
+  LINE_COUNT_AT_20_PX: number;
+}) {
+  const lastOrder = getLastOrder(messages);
   const extraPagesRequired = Math.ceil(currLineCount / LINE_COUNT_AT_20_PX);
   const nestedSubArray = [curr];
   for (let i = 0; i < extraPagesRequired; i++) {
     if (i > 0) {
-      nestedSubArray.push({ id: Math.random() * 1000, text: "" });
+      nestedSubArray.push({
+        id: Math.random() * 1000,
+        order: lastOrder + i + 1,
+        text: {
+          content: "",
+        },
+      });
     }
   }
   return nestedSubArray;
@@ -83,11 +97,12 @@ export function breakMesagesArrayInotPages(messages: Message[]) {
         acc[currentPageKey + 1] = {
           totalLinesCount: currLineCount,
           messages: [
-            ...handleItemLargerThanpage(
+            ...handleItemLargerThanpage({
               currLineCount,
+              messages,
               curr,
               LINE_COUNT_AT_20_PX,
-            ),
+            }),
           ],
         };
       } else {

@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Message } from "./types";
 import { RotateCcw, RotateCw } from "lucide-react";
 import { MessagesRowShiftActions, MessagesRowActions } from "./list.tsx/MessageListitemActions";
@@ -16,17 +16,17 @@ export function MessageImageCard({
   printing = false,
   setMessages,
 }: MessageImageCardProps) {
-  const imageUrl = msg?.image ? URL.createObjectURL(msg?.image) : null;
-  const imageREf = useRef<HTMLImageElement | null>(null);
+  const imageUrl = msg?.image ? URL.createObjectURL(msg?.image.file) : null;
+
   const [imageAngle, setImageAngle] = useState(0);
   if (!imageUrl) return null;
   function rotateImageLeft() {
-    if (!imageREf.current) return;
+
     //   imageREf.current.style.transform = `rotate(${imageAngle-90}deg)`
     setImageAngle(imageAngle - 90);
   }
   function rotateImageRight() {
-    if (!imageREf.current) return;
+
     //   imageREf.current.style.transform = `rotate(${imageAngle+90}deg)`
     setImageAngle(imageAngle + 90);
   }
@@ -34,6 +34,7 @@ export function MessageImageCard({
   return (
     <div className="flex w-full justify-between gap-2 rounded-lg p-2">
       <MessagesRowShiftActions
+        msg={msg}
         index={index}
         printing={printing}
         setMessages={setMessages}
@@ -45,7 +46,6 @@ export function MessageImageCard({
         style={{
           transform: `rotate(${imageAngle}deg)`,
         }}
-        ref={imageREf}
         className="max-h-[300px] w-full rounded-lg"
         src={imageUrl}
         alt="image"

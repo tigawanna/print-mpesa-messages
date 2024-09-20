@@ -1,7 +1,7 @@
+import { Message } from "../types";
 import { MessagesListItem } from "./MessageListItems";
 
 
-type Message = { id: number; text?: string; image?: File };
 interface MessagesListProps {
   printing?: boolean;
   messages: Message[];
@@ -16,7 +16,7 @@ export function MessagesList({
 }: MessagesListProps) {
   return (
     <div className="flex h-full w-full flex-col items-center gap-3 px-5 py-2">
-      {messages.map((msg, index) => (
+      {messages.sort((a, b) => a.order - b.order).map((msg, index) => (
         <MessagesListItem
           key={msg.id}
           msg={msg}

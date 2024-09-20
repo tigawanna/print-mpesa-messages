@@ -2,12 +2,14 @@ import { ImagePlus } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import { Message } from "./types";
+import { appendMessage, insertMessages } from "./utils/lists";
 
 interface TextAreaProps {
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
   messageToUpdate?: {
     idx: number;
     text: string;
+    order:number
   };
 }
 
@@ -15,56 +17,6 @@ export function TextArea({ setMessages, messageToUpdate }: TextAreaProps) {
   const [input, setInput] = useState(messageToUpdate?.text || "");
   function handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setInput(e.target.value);
-  }
-  function appendMessage() {
-    if (typeof input !== "string") return;
-    if (input.length === 0) return;
-
-    if (input.startsWith("[")) {
-      const message_chunks = input.split("[");
-      message_chunks.forEach((message, idx) => {
-        const message_body = message.split(":").slice(2).join(" ");
-            const randomNumber = Math.floor(Math.random() * 1000)+idx;
-        setMessages((prev) => [
-          ...prev,
-          { id: randomNumber, text: message_body },
-        ]);
-      });
-      setInput("");
-      return;
-    }
-    if (input.includes("---")) {
-      const message_chunks = input.split("---");
-      message_chunks.forEach((message, idx) => {
-            const randomNumber = Math.floor(Math.random() * 1000)+idx;
-        setMessages((prev) => [
-          ...prev,
-          { id: randomNumber, text: message.trim() },
-        ]);
-      });
-      setInput("");
-      return;
-    }
-    const randomNumber = Math.floor(Math.random() * 1000);
-    setMessages((prev) => [...prev, { id: randomNumber, text: input }]);
-    // setMessages(prev => [...prev, input])
-    setInput("");
-  }
-
-  function insertMessages({ idx, text }: { idx: number; text: string }) {
-    const newTextChunks = text.split("---");
-    console.log(newTextChunks);
-    const spliceFrom = idx - 1;
-    const spliceTo = idx + newTextChunks.length - 1;
-    const newTextChunksArray = newTextChunks.map((message) => ({
-      id: Math.floor(Math.random() * 1000),
-      text: message.trim(),
-    }));
-    setMessages((prev) => [
-      ...prev.slice(0, spliceFrom),
-      ...newTextChunksArray,
-      ...prev.slice(spliceTo),
-    ]);
   }
 
   return (
@@ -88,14 +40,16 @@ export function TextArea({ setMessages, messageToUpdate }: TextAreaProps) {
             <button
               className="btn btn-sm text-secondary"
               onClick={() =>
-                insertMessages({ idx: messageToUpdate.idx, text: input })
+                insertMessages({ idx: messageToUpdate.idx,order:messageToUpdate.order,text: input,setMessages })
               }
             >
               insert
             </button>
           ) : (
-            <button className="btn btn-sm text-primary" onClick={appendMessage}>
-              appendt
+            <button className="btn btn-sm text-primary" onClick={()=>appendMessage({
+              input,setInput,setMessages
+            })}>
+              append
             </button>
           )}
           {/* if there is a button in form, it will close the modal */}
@@ -115,15 +69,19 @@ export function ImageArea({ setMessages, imageDialogRef }: ImageAreaProps) {
   useEffect(() => {
     if (imagelist !== null) {
       const imagesarray = Array.from(imagelist);
-      setMessages((prev) => [
+      setMessages((prev) => {
+        return[
         ...prev,
         ...imagesarray.map((image, idx) => {
           return {
             id: prev.length + idx,
-            image,
+            order:idx,
+            image:{
+              file:image
+            },
           };
         }),
-      ]);
+      ]});
     }
   }, [imagelist]);
 

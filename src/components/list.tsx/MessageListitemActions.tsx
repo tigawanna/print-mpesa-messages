@@ -1,8 +1,8 @@
-import { arrayMove } from "@dnd-kit/sortable";
-import { Edit, Minus, ChevronUp, ChevronDown } from "lucide-react";
+import { Edit, Minus, ChevronUp, ChevronDown, ChevronsUp, ChevronsDown } from "lucide-react";
 import { useRef, useEffect } from "react";
 import { TextArea } from "../MessageInputs";
 import { Message } from "../types";
+import { mergeInto } from "../utils/lists";
 
 interface MessagesRowActionsProps {
   index: number;
@@ -56,7 +56,7 @@ export function MessagesRowActions({
           <div className="modal-box w-full min-w-[90%] max-w-[90%] gap-2">
             <h3 className="p-2 text-lg font-bold">Paste in mpesa messages</h3>
             <TextArea
-              messageToUpdate={{ idx: index, text: msg?.text ?? "" }}
+              messageToUpdate={{ idx: index, text: msg?.text.content ?? "",order:msg?.order }}
               setMessages={setMessages}
             />
           </div>
@@ -72,30 +72,85 @@ export function MessagesRowActions({
 interface MessagesRowShiftActionsProps {
   index: number;
   printing?: boolean;
+  msg?: Message;
   setMessages?: React.Dispatch<React.SetStateAction<Message[]>>;
 }
 
 export function MessagesRowShiftActions({
   index,
   printing,
+  msg,
   setMessages,
 }: MessagesRowShiftActionsProps) {
   function moveUpwards(index: number) {
-    setMessages?.((prev) => arrayMove(prev, index, index - 1));
+    setMessages?.((prev) =>{
+      const mainItem = prev[index];
+      const otherItem = prev[index-1];
+      const newArray = prev.map((item, i) => {
+        if (i === index) return {
+          ...item,order:otherItem?.order
+        }
+        if (i === index - 1) return {
+          ...item,order:mainItem?.order
+        }
+        return item
+      })
+      return newArray
+    } );
   }
   function moveDownwards(index: number) {
-    setMessages?.((prev) => arrayMove(prev, index, index + 1));
+    // setMessages?.((prev) => arrayMove(prev, index, index + 1));
+    setMessages?.((prev) =>{
+      const mainItem = prev[index];
+      const otherItem = prev[index+1];
+      const newArray = prev.map((item, i) => {
+        if (i === index) return {
+          ...item,order:otherItem?.order
+        }
+        if (i === index + 1) return {
+          ...item,order:mainItem?.order
+        }
+        return item
+      })
+      return newArray
+    } );
   }
 
   if (printing) return null;
   return (
     <div className="flex flex-wrap items-center justify-center gap-3">
       <div className="flex flex-wrap items-center justify-center gap-2">
-        <button className="btn btn-sm" onClick={() => moveUpwards(index)}>
-          <ChevronUp className="size-4 hover:bg-success" />
+        <button
+          className="hover:btn-success btn btn-sm flex flex-col"
+          onClick={() =>
+            mergeInto({ index, setMessages, target: "above", msg })
+          }
+        >
+          <ChevronsUp className="size-4" />
+
         </button>
-        <button className="btn btn-sm" onClick={() => moveDownwards(index)}>
-          <ChevronDown className="size-4 hover:bg-success" />
+        <button
+          className="hover:btn-success btn btn-sm"
+          onClick={() => moveUpwards(index)}
+ 
+        >
+          <ChevronUp className="size-4" />
+        </button>
+        <button
+          className="hover:btn-success btn btn-sm"
+          onClick={() => moveDownwards(index)}
+
+        >
+          <ChevronDown className="size-4" />
+        </button>
+        <button
+          className="hover:btn-success btn btn-sm "
+          onClick={() =>
+            mergeInto({ index, setMessages, target: "below", msg })
+          }
+        >
+          <ChevronsDown className="size-4" />
+
         </button>
       </div>
     </div>

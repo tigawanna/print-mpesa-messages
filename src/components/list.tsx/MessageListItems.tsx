@@ -17,8 +17,8 @@ export function MessagesListItem({
 }: MessagesListItemProps) {
   if (!msg) return null;
   // is a string
-  if (typeof msg.text === "string") {
-    if (msg.text.length === 0) return null;
+  if (typeof msg.text?.content === "string") {
+    if (msg.text.content.length === 0) return null;
     return (
       <div
         id={msg.id.toString()}
@@ -30,11 +30,13 @@ export function MessagesListItem({
       >
         <div className="flex w-full items-center justify-between gap-2">
           <MessagesRowShiftActions
+            msg={msg}
             index={index}
             printing={printing}
             setMessages={setMessages}
           />
-          <p className="w-full text-lg"> {msg.text}</p>
+          <div className="print:hidden text-3xl border  rounded-full">{msg.order}</div>
+          <p className="w-full text-lg"> {msg.text.content}</p>
 
           <MessagesRowActions
             msg={msg}
