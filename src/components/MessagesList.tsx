@@ -2,7 +2,7 @@ import { ChevronDown, ChevronUp, Edit, Minus } from "lucide-react";
 import { arrayMove } from "@dnd-kit/sortable";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { TextArea } from "./MessageInputs";
-import { A4_WIDTH, breakMesagesArrayInotPages } from "./utils/paging-helpers";
+import { breakMesagesArrayInotPages } from "./utils/paging-helpers";
 import { MessageImageCard } from "./MessageImageCard";
 
 type Message = { id: number; text?: string; image?: File };
