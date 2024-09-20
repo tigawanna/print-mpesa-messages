@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { MessageInputModals } from "./components/MessageInputs";
-import { MessagesList } from "./components/MessagesList";
+import { MessagesList } from "./components/list.tsx/MessagesList";
 import { Message } from "./components/types";
 import { PrintMessages } from "./components/PrintMessages";
 import { Printer, X } from "lucide-react";

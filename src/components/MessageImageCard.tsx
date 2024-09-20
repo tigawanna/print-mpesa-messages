@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
-import { MessagesRowShiftActions, MessagesRowActions } from "./MessagesList";
 import { Message } from "./types";
 import { RotateCcw, RotateCw } from "lucide-react";
+import { MessagesRowShiftActions, MessagesRowActions } from "./list.tsx/MessageListitemActions";
 
 interface MessageImageCardProps {
   msg: Message;

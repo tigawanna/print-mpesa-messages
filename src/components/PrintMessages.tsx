@@ -3,7 +3,8 @@ import React from "react";
 import { useRef } from "react";
 import ReactToPrint from "react-to-print";
 import { Message } from "./types";
-import { PrintMessagesList } from "./MessagesList";
+import { PrintMessagesList } from "./list.tsx/PrintMessgesList";
+
 
 interface PrintMessagesProps {
   messages: Message[];
