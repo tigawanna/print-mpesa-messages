@@ -39,7 +39,7 @@ function App() {
           {messages.length > 0 && (
             <div className="flex w-full justify-end gap-5">
               <button
-                className="btn btn-error btn-sm"
+                className="btn btn-error btn-sm fixed top-[10%] right-[5%]"
                 onClick={() => setMessages([])}
               >
                 <X />

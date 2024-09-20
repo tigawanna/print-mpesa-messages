@@ -24,9 +24,10 @@ export function TextArea({ setMessages, messageToUpdate }: TextAreaProps) {
       const message_chunks = input.split("[");
       message_chunks.forEach((message, idx) => {
         const message_body = message.split(":").slice(2).join(" ");
+            const randomNumber = Math.floor(Math.random() * 1000)+idx;
         setMessages((prev) => [
           ...prev,
-          { id: prev[idx].id + idx, text: message_body },
+          { id: randomNumber, text: message_body },
         ]);
       });
       setInput("");
@@ -35,9 +36,10 @@ export function TextArea({ setMessages, messageToUpdate }: TextAreaProps) {
     if (input.includes("---")) {
       const message_chunks = input.split("---");
       message_chunks.forEach((message, idx) => {
+            const randomNumber = Math.floor(Math.random() * 1000)+idx;
         setMessages((prev) => [
           ...prev,
-          { id: prev[idx].id + idx, text: message.trim() },
+          { id: randomNumber, text: message.trim() },
         ]);
       });
       setInput("");

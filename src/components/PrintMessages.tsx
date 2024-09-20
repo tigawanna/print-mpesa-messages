@@ -15,7 +15,7 @@ export function PrintMessages({ messages }: PrintMessagesProps) {
     <div className="flex h-full w-full flex-col items-center justify-center">
       <ReactToPrint
         trigger={() => (
-          <button className="btn btn-accent btn-wide fixed top-[3%] z-50 animate-bounce">
+          <button className="btn btn-accent btn-wide fixed top-[3%] left-[10%] z-50 animate-bounce">
             <PrinterIcon />
           </button>
         )}

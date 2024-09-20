@@ -94,11 +94,11 @@ export function MessagesListItem({
     return (
       <div
         id={msg.id.toString()}
-        style={{
-          width: A4_WIDTH,
-        }}
+        // style={{
+        //   width: A4_WIDTH,
+        // }}
         key={msg.id}
-        className="flex flex-col gap-1 rounded-lg bg-base-200 p-2 transition-all duration-700 animate-in zoom-in-95"
+        className="flex flex-col w-full md:w-[70%] lg:w-[500ppx] print:w-[500px] gap-1 rounded-lg bg-base-200 p-2 transition-all duration-700 animate-in zoom-in-95"
       >
         <div className="flex w-full items-center justify-between gap-2">
           <MessagesRowShiftActions
