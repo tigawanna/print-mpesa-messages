@@ -4,34 +4,38 @@ import react from '@vitejs/plugin-react'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), VitePWA({
-    registerType: 'prompt',
+  plugins: [
+    react(),
+    VitePWA({
+      registerType: "prompt",
 
-    injectRegister: false,
-    
-    pwaAssets: {
-      disabled: false,
-      config: true,
-    },
+      injectRegister: false,
 
-    manifest: {
-      name: 'print-mpesa-messages',
-      short_name: 'm-print',
-      description: 'Paste your M-PESA messages from WhatsApp and instantly generate a printable, formatted PDF.',
-      theme_color: '#000000',
-    },
+      pwaAssets: {
+        disabled: false,
+        config: true,
+      },
 
-    workbox: {
-      globPatterns: ['**/*.{js,css,html,svg,png,ico}'],
-      cleanupOutdatedCaches: true,
-      clientsClaim: true,
-    },
+      manifest: {
+        name: "print-mpesa-messages",
+        short_name: "m-print",
+        description:
+          "Paste your M-PESA messages from WhatsApp and instantly generate a printable, formatted PDF.",
+        theme_color: "#FF5733 ",
+      },
 
-    devOptions: {
-      enabled:true,
-      navigateFallback: 'index.html',
-      suppressWarnings: true,
-      type: 'module',
-    },
-  })],
-})
+      workbox: {
+        globPatterns: ["**/*.{js,css,html,svg,png,ico}"],
+        cleanupOutdatedCaches: true,
+        clientsClaim: true,
+      },
+
+      devOptions: {
+        enabled: true,
+        navigateFallback: "index.html",
+        suppressWarnings: true,
+        type: "module",
+      },
+    }),
+  ],
+});
