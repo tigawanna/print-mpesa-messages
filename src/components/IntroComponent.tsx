@@ -17,10 +17,10 @@ export function IntroComponent({setMessages}: IntroComponentProps) {
         </p>
         Let's get printing ✨
         <TextArea setMessages={setMessages} />
-        <div className="flex w-full items-center justify-between">
+        {/* <div className="flex w-full items-center justify-between">
           <p>👇 print them here </p>
           <p>add messages here 👇</p>
-        </div>
+        </div> */}
       </div>
     </div>
   );

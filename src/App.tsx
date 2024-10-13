@@ -12,23 +12,6 @@ function App() {
   const [messages, setMessages] = useState<Message[]>(defaultList());
   // console.log(" ==  messags  ==== ",messages)
   const [isPrinting, setIsPrinting] = useState(false);
-
-  // return (
-  //   <div className="min-h-screen w-full h-full flex flex-col  items-center gap-3  p-2">
-  //     {/* <div className="circle-to-pill ">pill aniamtion</div> */}
-  //     <PWAStatusPill />
-  //     <IntroComponent />
-  //     <button
-  //       className="btn btn-primary fixed bottom-[5%] left-[5%]"
-  //       onClick={() => setIsPrinting(!isPrinting)}>
-  //       {isPrinting ? <X className="" /> : <Printer className="" />}
-  //     </button>
-  //     <MessageInputModals setMessages={setMessages} />
-  //   </div>
-  // );
-  // return <ReactPDFContainer/>
-
-
   return (
     <div className="flex h-full min-h-screen w-full flex-col justify-center p-2">
       {/* <div className="circle-to-pill ">pill aniamtion</div> */}
@@ -60,7 +43,8 @@ function App() {
       >
         {isPrinting ? <X className="" /> : <Printer className="" />}
       </button>
-      <MessageInputModals setMessages={setMessages} />
+      {messages.length > 0 &&
+      <MessageInputModals setMessages={setMessages} />}
       {/* <PWABadge/> */}
     </div>
   );
