@@ -19,6 +19,8 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-image-pan-zoom-rotate": "^1.6.0",
+    "sharp": "0.32.6",
+    "sharp-ico": "0.1.5",
     "react-textarea-autosize": "^8.5.3",
     "react-to-print": "^2.15.1"
   },
@@ -37,8 +39,6 @@
     "postcss": "8.4.45",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.6",
-    "sharp": "0.32.6",
-    "sharp-ico": "0.1.5",
     "tailwindcss": "3.4.10",
     "tailwindcss-animate": "1.0.7",
     "typescript": "^5.2.2",
