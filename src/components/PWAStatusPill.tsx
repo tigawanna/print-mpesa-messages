@@ -21,19 +21,17 @@ export function PWAStatusPill() {
     },
   });
 
-  const [_, setIsVisible] = useState(false);
   const [isRemoving, setIsRemoving] = useState(false);
   useEffect(() => {
     let timeout: number;
     if (isRemoving) {
       timeout = setTimeout(() => {
-        setIsVisible(false);
         setOfflineReady(false);
         setNeedRefresh(false);
       }, 1500); // 1.2s for animation + 300ms for fade out
     }
     return () => clearTimeout(timeout);
-  }, [isRemoving]);
+  }, [isRemoving, setNeedRefresh, setOfflineReady]);
 
   const handleRemove = () => {
     setIsRemoving(true);
@@ -46,22 +44,24 @@ export function PWAStatusPill() {
     <div className="flex w-full items-center justify-center">
       {(offlineReady || needRefresh) && (
         <div
-          className="circle-to-pill flex w-full gap-2 bg-base-200"
+          className="circle-to-pill flex w-full gap-2 bg-gray-100 border border-gray-300"
           data-remove={isRemoving ? true : undefined}
         >
-          <div role="alert" className="alert-sm alert">
-            <AlertCircle />
+          <div role="alert" className="alert-sm alert bg-white border border-gray-200">
+            <AlertCircle className="text-blue-600" />
             {offlineReady ? (
-              <span className="line-clamp-1">App is ready to work offline</span>
+              <span className="line-clamp-1 text-gray-700 font-medium">
+                App is ready to work offline
+              </span>
             ) : (
-              <span className="line-clamp-1">
-                New content available, click on reload button to update.
+              <span className="line-clamp-1 text-gray-700 font-medium">
+                New content available, click reload to update
               </span>
             )}
             <div className="flex items-center justify-center gap-2">
               {needRefresh && (
                 <button
-                  className="btn btn-outline btn-sm"
+                  className="btn btn-sm bg-blue-600 text-white border-none"
                   onClick={() => {
                     updateServiceWorker(true);
                     handleRemove();

@@ -4,9 +4,10 @@
 
 .circle-to-pill {
   width: 80%;
-  border-radius: 50px;
-  animation: circleToPill 1s ease-in forwards;
-  transition: opacity 0.3s ease-out;
+  border-radius: 20px;
+  animation: circleToPill 1s ease-in-out forwards;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(10px);
 }
 
 .circle-to-pill:not([data-remove]) {
@@ -22,25 +23,48 @@
     width: 30%;
     border-radius: 50px;
     opacity: 0.4;
+    transform: translateY(-10px);
   }
   100% {
     width: 80%;
-    border-radius: 50px;
+    border-radius: 20px;
     opacity: 1;
+    transform: translateY(0);
   }
 }
 
 @keyframes pillToCircle {
   0% {
     width: 80%;
-    border-radius: 50px;
+    border-radius: 20px;
     opacity: 1;
+    transform: scale(1);
   }
   100% {
     width: 0%;
     border-radius: 50px;
-    opacity: 0.1;
+    opacity: 0;
+    transform: scale(0.8);
   }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #6b7280;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4b5563;
 }
 
 body {
@@ -48,32 +72,37 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
+  background: #f9fafb;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
+
 * {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
 }
+
 .page {
   width: 216mm;
   min-height: 279mm;
   padding: 20mm;
   margin: 10mm auto;
-  border: 1px #d3d3d3 solid;
-  border-radius: 5px;
+  border: 1px #e5e7eb solid;
+  border-radius: 8px;
   background: white;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
 }
-
 
 @page {
   size: Letter;
   margin: 0;
 }
+
 @media print {
   html,
   body {
     width: 216mm;
     height: 279mm;
+    background: white !important;
   }
   .page {
     margin: 0;
@@ -84,5 +113,10 @@ body {
     box-shadow: initial;
     background: initial;
     page-break-after: always;
+  }
+  
+  /* Hide non-print elements */
+  .no-print {
+    display: none !important;
   }
 }

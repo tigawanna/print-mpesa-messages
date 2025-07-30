@@ -32,28 +32,37 @@ export function MessageImageCard({
   }
 
   return (
-    <div className="flex w-full justify-between gap-2 rounded-lg p-2">
+    <div className="group flex w-full justify-between gap-4 rounded-lg bg-white border border-gray-300 p-3 shadow-sm md:w-[70%] lg:w-[500px] print:w-[500px]">
       <MessagesRowShiftActions
         msg={msg}
         index={index}
         printing={printing}
         setMessages={setMessages}
       />
-      <button className="print:hidden" onClick={rotateImageLeft}>
-        <RotateCcw />
+      <button 
+        className="print:hidden btn btn-sm btn-circle bg-blue-600 hover:bg-blue-700 text-white border-none" 
+        onClick={rotateImageLeft}
+      >
+        <RotateCcw size={16} />
       </button>
-      <img
-        style={{
-          transform: `rotate(${imageAngle}deg)`,
-        }}
-        className="max-h-[300px] w-full rounded-lg"
-        src={imageUrl}
-        alt="image"
-      />
-      <button className="print:hidden" onClick={rotateImageRight}>
-        <RotateCw />
+      <div className="flex-1 flex justify-center items-center">
+        <img
+          style={{
+            transform: `rotate(${imageAngle}deg)`,
+          }}
+          className="max-h-[300px] max-w-full rounded-lg object-contain"
+          src={imageUrl}
+          alt="M-Pesa screenshot"
+        />
+      </div>
+      <button 
+        className="print:hidden btn btn-sm btn-circle bg-gray-600 hover:bg-gray-700 text-white border-none" 
+        onClick={rotateImageRight}
+      >
+        <RotateCw size={16} />
       </button>
       <MessagesRowActions
+        msg={msg}
         index={index}
         printing={printing}
         setMessages={setMessages}

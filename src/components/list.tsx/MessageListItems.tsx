@@ -26,17 +26,23 @@ export function MessagesListItem({
         //   width: A4_WIDTH,
         // }}
         key={msg.id}
-        className="flex w-full flex-col gap-1 rounded-lg bg-base-200 p-2 transition-all duration-700 animate-in zoom-in-95 md:w-[70%] lg:w-[500ppx] print:w-[500px]"
+        className="group flex w-full flex-col gap-1 rounded-lg bg-white border border-gray-300 p-3 shadow-sm md:w-[70%] lg:w-[500px] print:w-[500px]"
       >
-        <div className="flex w-full items-center justify-between gap-2">
+        <div className="flex w-full items-center justify-between gap-4">
           <MessagesRowShiftActions
             msg={msg}
             index={index}
             printing={printing}
             setMessages={setMessages}
           />
-          <div className="print:hidden text-3xl border  rounded-full">{msg.order}</div>
-          <p className="w-full text-lg"> {msg.text.content}</p>
+          <div className="print:hidden flex items-center justify-center w-8 h-8 bg-gray-500 text-white rounded-full font-medium text-sm">
+            {msg.order}
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-black leading-normal break-words font-mono text-sm"> 
+              {msg.text.content}
+            </p>
+          </div>
 
           <MessagesRowActions
             msg={msg}

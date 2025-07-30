@@ -27,24 +27,24 @@ export function MessagesRowActions({
       `text-input-modal-${index}`,
     ) as HTMLDialogElement;
     textDialogRef.current = textInputDialog;
-  }, []);
+  }, [index]);
   if (printing) return null;
   return (
-    <div className="flex flex-wrap items-center justify-center gap-3">
+    <div className="flex flex-wrap items-center justify-center gap-2 opacity-0 group-hover:opacity-100">
       <div className="flex flex-wrap items-center justify-center gap-2">
         {msg?.text && setMessages && (
           <button
             onClick={() => textDialogRef.current?.showModal()}
-            className="btn btn-sm text-warning hover:border hover:border-warning"
+            className="btn btn-sm bg-blue-600 hover:bg-blue-700 text-white border-none"
           >
-            <Edit className="size-4 cursor-pointer" />
+            <Edit className="size-4" />
           </button>
         )}
         <button
           onClick={() => removeMessage(index)}
-          className="btn btn-sm text-error hover:border hover:border-error"
+          className="btn btn-sm bg-red-600 hover:bg-red-700 text-white border-none"
         >
-          <Minus className="size-4 cursor-pointer" />
+          <Minus className="size-4" />
         </button>
       </div>
       {msg?.text && setMessages && (
@@ -53,8 +53,10 @@ export function MessagesRowActions({
           id={`text-input-modal-${index}`}
           className="modal w-full min-w-[90%] max-w-[90%]"
         >
-          <div className="modal-box w-full min-w-[90%] max-w-[90%] gap-2">
-            <h3 className="p-2 text-lg font-bold">Paste in mpesa messages</h3>
+          <div className="modal-box w-full min-w-[90%] max-w-[90%] gap-2 bg-white border border-gray-300">
+            <h3 className="p-2 text-xl font-bold text-gray-800">
+              Edit M-Pesa Message
+            </h3>
             <TextArea
               messageToUpdate={{ idx: index, text: msg?.text.content ?? "",order:msg?.order }}
               setMessages={setMessages}
@@ -118,39 +120,39 @@ export function MessagesRowShiftActions({
 
   if (printing) return null;
   return (
-    <div className="flex flex-wrap items-center justify-center gap-3">
-      <div className="flex flex-wrap items-center justify-center gap-2">
+    <div className="flex flex-wrap items-center justify-center gap-2 opacity-0 group-hover:opacity-100">
+      <div className="flex flex-col gap-1">
         <button
-          className="hover:btn-success btn btn-sm flex flex-col"
+          className="btn btn-xs bg-blue-600 hover:bg-blue-700 text-white border-none"
           onClick={() =>
             mergeInto({ index, setMessages, target: "above", msg })
           }
+          title="Merge with above"
         >
-          <ChevronsUp className="size-4" />
-
+          <ChevronsUp className="size-3" />
         </button>
         <button
-          className="hover:btn-success btn btn-sm"
+          className="btn btn-xs bg-blue-500 hover:bg-blue-600 text-white border-none"
           onClick={() => moveUpwards(index)}
- 
+          title="Move up"
         >
-          <ChevronUp className="size-4" />
+          <ChevronUp className="size-3" />
         </button>
         <button
-          className="hover:btn-success btn btn-sm"
+          className="btn btn-xs bg-gray-500 hover:bg-gray-600 text-white border-none"
           onClick={() => moveDownwards(index)}
-
+          title="Move down"
         >
-          <ChevronDown className="size-4" />
+          <ChevronDown className="size-3" />
         </button>
         <button
-          className="hover:btn-success btn btn-sm "
+          className="btn btn-xs bg-gray-600 hover:bg-gray-700 text-white border-none"
           onClick={() =>
             mergeInto({ index, setMessages, target: "below", msg })
           }
+          title="Merge with below"
         >
-          <ChevronsDown className="size-4" />
-
+          <ChevronsDown className="size-3" />
         </button>
       </div>
     </div>

@@ -13,11 +13,12 @@ interface PrintMessagesProps {
 export function PrintMessages({ messages }: PrintMessagesProps) {
   const componentRef = useRef(null);
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center">
+    <div className="flex h-full w-full flex-col items-center justify-center bg-gray-50">
       <ReactToPrint
         trigger={() => (
-          <button className="btn btn-accent btn-wide fixed top-[3%] left-[10%] z-50 animate-bounce">
+          <button className="btn btn-primary btn-wide fixed top-[3%] left-[10%] z-50 bg-blue-600 text-white border-none">
             <PrinterIcon />
+            Print Now
           </button>
         )}
         content={() => componentRef.current}
@@ -32,8 +33,8 @@ type MyProps = {
   messages: Message[];
 };
 
-export class PrintThis extends React.Component<MyProps, {}> {
-  constructor(props: any) {
+export class PrintThis extends React.Component<MyProps, Record<string, never>> {
+  constructor(props: MyProps) {
     super(props);
   }
 

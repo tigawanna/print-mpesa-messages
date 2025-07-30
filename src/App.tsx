@@ -13,7 +13,7 @@ function App() {
   // console.log(" ==  messags  ==== ",messages)
   const [isPrinting, setIsPrinting] = useState(false);
   return (
-    <div className="flex h-full min-h-screen w-full flex-col justify-center p-2">
+    <div className="flex h-full min-h-screen w-full flex-col justify-center bg-gray-50 p-2">
       {/* <div className="circle-to-pill ">pill aniamtion</div> */}
       <PWAStatusPill />
       {messages.length === 0 && <IntroComponent setMessages={setMessages}/>}
@@ -25,7 +25,7 @@ function App() {
           {messages.length > 0 && (
             <div className="flex w-full justify-end gap-5">
               <button
-                className="btn btn-error btn-sm fixed top-[10%] right-[5%]"
+                className="btn btn-error btn-sm fixed top-[10%] right-[5%] shadow-sm"
                 onClick={() => setMessages([])}
               >
                 <X />
@@ -38,7 +38,7 @@ function App() {
 
       {/* <ReactPDFContainer/> */}
       <button
-        className="btn fixed bottom-[5%] left-[5%] text-primary"
+        className="btn fixed bottom-[5%] left-[5%] bg-blue-600 text-white border-none shadow-sm"
         onClick={() => setIsPrinting(!isPrinting)}
       >
         {isPrinting ? <X className="" /> : <Printer className="" />}
